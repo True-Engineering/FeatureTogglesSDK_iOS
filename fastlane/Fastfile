@@ -1,0 +1,32 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+
+default_platform(:ios)
+
+ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "10"
+
+platform :ios do
+    lane :build_xcframework do
+        create_xcframework(
+            workspace: 'FeatureToggles.xcworkspace',
+            scheme: 'FeatureToggles',
+            product_name: 'FeatureToggles',
+            destinations: ['iOS', 'maccatalyst'],
+            xcframework_output_directory: 'build'
+        )
+    end
+end

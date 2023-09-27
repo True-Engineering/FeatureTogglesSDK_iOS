@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "NetShears",
+        "repositoryURL": "https://github.com/divar-ir/NetShears.git",
+        "state": {
+          "branch": null,
+          "revision": "1e94006dea7eebbb3dc48c59ee97d470ea40b6a7",
+          "version": "3.5.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
