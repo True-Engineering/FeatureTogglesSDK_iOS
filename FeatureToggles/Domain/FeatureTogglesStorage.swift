@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - FeatureTogglesStorageType
+
 public enum FeatureTogglesStorageType {
     case inMemory
     case userDefaults
@@ -16,6 +18,8 @@ public enum FeatureTogglesStorageType {
         }
     }
 }
+
+// MARK: - FeatureTogglesStorage
 
 public protocol FeatureTogglesStorage {
     

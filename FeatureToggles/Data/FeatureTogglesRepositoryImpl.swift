@@ -2,16 +2,26 @@ import Foundation
 
 class FeatureTogglesRepositoryImpl: FeatureTogglesRepository {
     
+    // MARK: - Properties
+    
     private var storage: FeatureTogglesStorage
     private var service: FeatureFlagService
     private var lock = NSLock()
     
     var didUpdate: (() -> Void)?
     
+    // MARK: - Init
+    
     init(storage: FeatureTogglesStorage, service: FeatureFlagService) {
         self.storage = storage
         self.service = service
     }
+    
+}
+
+// MARK: - FeatureTogglesRepository methods
+
+extension FeatureTogglesRepositoryImpl {
     
     func checkHash(hash: String?) {
         lock.lock()

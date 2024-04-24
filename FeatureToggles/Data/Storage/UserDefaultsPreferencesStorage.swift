@@ -5,12 +5,16 @@ private enum Constants {
     static let keyFlagsHash = "FTSDK:Storage:FlagsHash"
 }
 
-class UserDefaultsPreferencesStorage: FeatureTogglesStorage {
+final class UserDefaultsPreferencesStorage {
+    
+    // MARK: - Properties
     
     private let userDefaults = UserDefaults.standard
     private let cryptService = CryptService()
     
     private var flags: [String: SDKFlag] = [:]
+    
+    // MARK: - Init
     
     init() {
         if let data = UserDefaults.standard.object(forKey: Constants.defaultPreferenceName) as? Data,
@@ -19,6 +23,11 @@ class UserDefaultsPreferencesStorage: FeatureTogglesStorage {
             self.flags = flags
         }
     }
+}
+
+// MARK: - FeatureTogglesStorage
+
+extension UserDefaultsPreferencesStorage: FeatureTogglesStorage {
     
     func save(flags: [SDKFlag]) {
         var dictionary: [String: SDKFlag] = [:]

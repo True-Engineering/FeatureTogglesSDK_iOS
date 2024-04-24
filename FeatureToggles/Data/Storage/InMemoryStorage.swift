@@ -1,9 +1,17 @@
 import Foundation
 
-class InMemoryStorage: FeatureTogglesStorage {
-
+final class InMemoryStorage {
+    
+    // MARK: - Properties
+    
     private var flagsStorage: [String: SDKFlag] = [:]
     private var flagsHash: String?
+    
+}
+
+// MARK: - FeatureTogglesStorage
+
+extension InMemoryStorage: FeatureTogglesStorage {
 
     func save(flags: [SDKFlag]) {
         flags.forEach {

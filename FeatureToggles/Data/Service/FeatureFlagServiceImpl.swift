@@ -1,15 +1,25 @@
 import Foundation
 
-internal class FeatureFlagServiceImpl: FeatureFlagService {
+internal class FeatureFlagServiceImpl {
+    
+    // MARK: - Properties
     
     private var endpoint: String
     private var headers: [String: String] = [:]
+    
+    // MARK: - Init
     
     init(endpoint: String, headers: [String: String]) {
         self.endpoint = endpoint
         self.headers = headers
     }
+    
+}
 
+// MARK: - FeatureFlagService
+    
+extension FeatureFlagServiceImpl: FeatureFlagService {
+    
     func loadFeatureToggles(completion: @escaping ((SDKFlagsWithHash) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
         var request = URLRequest(url: url)

@@ -10,6 +10,8 @@ public protocol FeatureTogglesSDKDelegate: AnyObject {
 
 public class FeatureTogglesSDK {
     
+    // MARK: - Properties
+    
     private var repository: FeatureTogglesRepository
     private var headerKey: String
     private var featuresLink: String
@@ -21,10 +23,14 @@ public class FeatureTogglesSDK {
     /// Intercept callback after response. You can use it for logging
     public var interceptResponse: ((NetShearsRequestModel) -> Void)?
     
+    // MARK: - Constants
+    
     public enum Constants {
         public static let defaultHeaderKey = "FF-Hash"
         public static let defaultAPIFeaturesPath = "/api/features"
     }
+    
+    // MARK: - Init
     
     /// Init SDK
     ///
@@ -139,6 +145,8 @@ extension FeatureTogglesSDK {
     }
     
 }
+
+// MARK: - RequestBroadcastDelegate
 
 extension FeatureTogglesSDK: RequestBroadcastDelegate {
 

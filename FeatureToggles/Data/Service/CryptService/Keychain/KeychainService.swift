@@ -2,7 +2,8 @@ import Foundation
 
 enum KeychainKey: String, CaseIterable {
     
-    // Crypt Keys
+    // MARK: - Crypt Keys
+    
     case cryptKey
     case cryptIv
     
@@ -14,7 +15,15 @@ enum KeychainKey: String, CaseIterable {
 
 final class KeychainService {
     
+    // MARK: - Properties
+    
     private let keychain = KeychainSwift()
+    
+}
+
+// MARK: - Public methods
+
+extension KeychainService {
     
     func set(key: KeychainKey, value: String) {
         keychain.set(value,

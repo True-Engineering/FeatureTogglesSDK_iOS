@@ -3,6 +3,8 @@ import CommonCrypto
 
 struct CryptService {
     
+    // MARK: - Properties
+    
     private let keychain = KeychainService()
     
     private let key: Data

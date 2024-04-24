@@ -2,7 +2,11 @@ import Foundation
 
 protocol FeatureTogglesRepository {
     
+    // MARK: - Properties
+    
     var didUpdate: (() -> Void)? { get set }
+    
+    // MARK: - Methods
 
     func checkHash(hash: String?)
     
