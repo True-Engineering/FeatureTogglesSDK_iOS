@@ -49,8 +49,8 @@ extension FeatureTogglesRepositoryImpl {
         service.loadFeatureToggles { [weak self] featureToggles in
             guard let self else { return }
             self.lock.lock()
-            self.storage.save(hash: featureToggles.hash)
             self.storage.clear()
+            self.storage.save(hash: featureToggles.hash)
             self.storage.save(flags: featureToggles.flags)
             self.lock.unlock()
             DispatchQueue.main.async {
@@ -58,4 +58,5 @@ extension FeatureTogglesRepositoryImpl {
             }
         }
     }
+    
 }

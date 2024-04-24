@@ -17,7 +17,7 @@ internal class FeatureFlagServiceImpl {
 }
 
 // MARK: - FeatureFlagService
-    
+
 extension FeatureFlagServiceImpl: FeatureFlagService {
     
     func loadFeatureToggles(completion: @escaping ((SDKFlagsWithHash) -> Void)) {
@@ -29,9 +29,17 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error  in
-            guard let data,
-                  let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self,
-                                                               from: data) else { return }
+            guard let data else {
+                if let error {
+                    FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
+                }
+                return
+            }
+            
+            guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
+                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result.")
+                return
+            }
             
             let featureFlags = featureFlagsWithHash.featureFlags.map { SDKFlag(name: $0.key,
                                                                                isEnabled: $0.value.enable,
@@ -44,4 +52,5 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
         
         task.resume()
     }
+    
 }

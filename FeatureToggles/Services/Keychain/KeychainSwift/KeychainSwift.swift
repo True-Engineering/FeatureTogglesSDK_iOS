@@ -320,7 +320,7 @@ final class KeychainSwift {
      
      - returns: the dictionary with kSecAttrSynchronizable item added if it was requested. Otherwise, it returns the original dictionary.
      
-    */
+     */
     func addSynchronizableIfRequired(_ items: [String: Any], addingItems: Bool) -> [String: Any] {
         if !synchronizable { return items }
         var result: [String: Any] = items

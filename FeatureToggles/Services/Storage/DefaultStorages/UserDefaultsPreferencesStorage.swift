@@ -39,10 +39,12 @@ extension UserDefaultsPreferencesStorage: FeatureTogglesStorage {
             userDefaults.set(encryptedData, forKey: Constants.defaultPreferenceName)
         }
         self.flags = dictionary
+        FeatureTogglesLoggingService.shared.log(message: "Feature flags were saved.")
     }
     
     func save(hash: String) {
         userDefaults.set(hash, forKey: Constants.keyFlagsHash)
+        FeatureTogglesLoggingService.shared.log(message: "Hash was saved.")
     }
     
     func getByName(name: String) -> SDKFlag? {
@@ -59,5 +61,8 @@ extension UserDefaultsPreferencesStorage: FeatureTogglesStorage {
     
     func clear() {
         userDefaults.set(nil, forKey: Constants.defaultPreferenceName)
+        userDefaults.set(nil, forKey: Constants.keyFlagsHash)
+        FeatureTogglesLoggingService.shared.log(message: "Feature flags storage was cleared.")
     }
+    
 }
