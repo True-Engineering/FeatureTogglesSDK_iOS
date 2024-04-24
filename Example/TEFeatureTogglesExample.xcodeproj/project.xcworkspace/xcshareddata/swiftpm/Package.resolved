@@ -1,0 +1,24 @@
+{
+  "originHash" : "ff54155a0d6257975936ca80d42f011439e2101ec0ac2a6ba15a35c602f4f829",
+  "pins" : [
+    {
+      "identity" : "featuretogglessdk_ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/True-Engineering/FeatureTogglesSDK_iOS.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "9a83402d9d404b81f403d0afb8a824ed2d35aca0"
+      }
+    },
+    {
+      "identity" : "netshears",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/divar-ir/NetShears.git",
+      "state" : {
+        "revision" : "1e94006dea7eebbb3dc48c59ee97d470ea40b6a7",
+        "version" : "3.5.1"
+      }
+    }
+  ],
+  "version" : 3
+}
