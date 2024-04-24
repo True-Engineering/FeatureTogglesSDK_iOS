@@ -34,7 +34,9 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
                                                                from: data) else { return }
             
             let featureFlags = featureFlagsWithHash.featureFlags.map { SDKFlag(name: $0.key,
-                                                                               isEnabled: $0.value.enable) }
+                                                                               isEnabled: $0.value.enable,
+                                                                               description: $0.value.description,
+                                                                               group: $0.value.group) }
             let hash = featureFlagsWithHash.featureFlagsHash
             
             completion(SDKFlagsWithHash(flags: featureFlags, hash: hash))
