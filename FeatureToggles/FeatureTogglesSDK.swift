@@ -112,7 +112,7 @@ extension FeatureTogglesSDK {
 }
 
 // MARK: - Interceptor methods
-    
+
 extension FeatureTogglesSDK {
     
     /// Start automatic feature toggles updation
@@ -149,7 +149,7 @@ extension FeatureTogglesSDK {
 // MARK: - RequestBroadcastDelegate
 
 extension FeatureTogglesSDK: RequestBroadcastDelegate {
-
+    
     public func newRequestArrived(_ request: NetShearsRequestModel) {
         guard let responseHeaders = request.responseHeaders else {
             interceptRequest?(request)
@@ -159,5 +159,5 @@ extension FeatureTogglesSDK: RequestBroadcastDelegate {
         guard request.url != featuresLink else { return }
         obtainHash(headers: responseHeaders)
     }
-
+    
 }
