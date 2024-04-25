@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TEFeatureToggles'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.swift_versions   = '4.0'
   s.summary          = 'SDK for working with remote feature toggles.'
   s.description      = <<-DESC
