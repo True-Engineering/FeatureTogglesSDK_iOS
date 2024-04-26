@@ -14,6 +14,18 @@ public struct SDKFlag: Codable, Identifiable {
         return name
     }
     
+    // MARK: - Init
+    
+    public init(name: String,
+                isEnabled: Bool,
+                description: String? = nil,
+                group: String? = nil) {
+        self.name = name
+        self.isEnabled = isEnabled
+        self.description = description
+        self.group = group
+    }
+    
 }
 
 struct SDKFlagsWithHash {
