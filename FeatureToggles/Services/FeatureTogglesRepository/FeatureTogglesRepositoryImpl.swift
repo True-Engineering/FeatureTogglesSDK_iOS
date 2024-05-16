@@ -49,7 +49,6 @@ extension FeatureTogglesRepositoryImpl {
         service.loadFeatureToggles { [weak self] featureToggles in
             guard let self else { return }
             self.lock.lock()
-            self.storage.clear()
             self.storage.save(hash: featureToggles.hash)
             self.storage.save(remoteFlags: featureToggles.flags)
             self.lock.unlock()
@@ -76,6 +75,10 @@ extension FeatureTogglesRepositoryImpl {
         storage.resetToDefaultValues()
         lock.unlock()
         didUpdate?()
+    }
+    
+    func clear() {
+        self.storage.clear()
     }
     
 }

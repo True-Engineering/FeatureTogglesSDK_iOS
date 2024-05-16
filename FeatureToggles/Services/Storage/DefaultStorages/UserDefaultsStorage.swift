@@ -137,6 +137,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     func clear() {
         userDefaults.set(nil, forKey: Constants.defaultStorageName)
         userDefaults.set(nil, forKey: Constants.keyFlagsHash)
+        flags = []
         
         FeatureTogglesLoggingService.shared.log(message: "Feature flags storage was cleared.")
     }
