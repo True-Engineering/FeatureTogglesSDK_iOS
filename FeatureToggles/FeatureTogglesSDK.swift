@@ -121,6 +121,12 @@ extension FeatureTogglesSDK {
         repository.changeOverrideState(name: name, value: value)
     }
     
+    /// Reset local values to default values (your appFlag value or server value).
+    /// Reset isOverride to false for server flags
+    public func resetToDefaultValues() {
+        repository.resetToDefaultValues()
+    }
+    
 }
 
 // MARK: - Interceptor methods
@@ -154,12 +160,6 @@ extension FeatureTogglesSDK {
         headers.forEach {
             addInterceptorHeader(header: $0.key, value: $0.value)
         }
-    }
-    
-    /// Reset local values to default values (your appFlag value or server value).
-    /// Reset isOverride to false for server flags
-    public func resetToDefaultValues() {
-        repository.resetToDefaultValues()
     }
     
 }

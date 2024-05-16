@@ -4,7 +4,7 @@ final class InMemoryStorage {
     
     // MARK: - Properties
     
-    private var flagsStorage: [String: SDKFeatureFlag] = [:]
+    private var flagsStorage: [SDKFeatureFlag] = []
     private var flagsHash: String?
     private var appFlags: [any FeatureFlagsEnum]
     
@@ -26,14 +26,14 @@ extension InMemoryStorage {
         
         let localFlags = appFlags
             .filter { appFlag in
-                !flagsStorage.keys.contains { appFlag.uid == $0 }
+                !flagsStorage.contains { appFlag.uid == $0.name }
             }.map {
                 SDKFeatureFlag(name: $0.uid,
                                description: $0.description,
                                localState: $0.defaultState)
             }
         
-        save(flags: flagsStorage.values + localFlags)
+        save(flags: flagsStorage + localFlags)
     }
     
 }
@@ -44,35 +44,30 @@ extension InMemoryStorage: FeatureTogglesStorage {
     
     func save(remoteFlags: [SDKFeatureFlag]) {
         if !appFlags.isEmpty {
-            flagsStorage.keys.forEach { key in
-                guard let remoteFlag = remoteFlags.first(where: { $0.name == key }) else {
-                    flagsStorage[key]?.isOverride = true
+            for index in 0 ..< flagsStorage.count {
+                guard let remoteFlag = remoteFlags.first(where: { $0.name == flagsStorage[index].name }) else {
+                    flagsStorage[index].isOverride = true
                     return
                 }
-                flagsStorage[key]?.description = remoteFlag.description
-                flagsStorage[key]?.remoteState = remoteFlag.remoteState
-                flagsStorage[key]?.group = remoteFlag.group
+                flagsStorage[index].description = remoteFlag.description
+                flagsStorage[index].remoteState = remoteFlag.remoteState
+                flagsStorage[index].group = remoteFlag.group
             }
         } else {
-            var dictionary: [String: SDKFeatureFlag] = [:]
-            remoteFlags.forEach { dictionary[$0.name] = $0 }
-            
-            dictionary.keys.forEach { key in
-                guard flagsStorage.keys.contains(where: { $0 == key }) else {
-                    flagsStorage[key] = dictionary[key]
+            remoteFlags.forEach { remoteFlag in
+                guard let index = flagsStorage.firstIndex(where: { $0.name == remoteFlag.name }) else {
+                    flagsStorage.append(remoteFlag)
                     return
                 }
-                flagsStorage[key]?.description = dictionary[key]?.description ?? ""
-                flagsStorage[key]?.remoteState = dictionary[key]?.remoteState ?? false
-                flagsStorage[key]?.group = dictionary[key]?.group
+                flagsStorage[index].description = remoteFlag.description
+                flagsStorage[index].remoteState = remoteFlag.remoteState
+                flagsStorage[index].group = remoteFlag.group
             }
         }
     }
     
     func save(flags: [SDKFeatureFlag]) {
-        var dictionary: [String: SDKFeatureFlag] = [:]
-        flags.forEach { dictionary[$0.name] = $0 }
-        flagsStorage = dictionary
+        flagsStorage = flags
         
         FeatureTogglesLoggingService.shared.log(message: "Feature flags were saved.")
     }
@@ -87,41 +82,42 @@ extension InMemoryStorage: FeatureTogglesStorage {
     }
     
     func getByName(name: String) -> SDKFeatureFlag? {
-        return flagsStorage[name]
+        return flagsStorage.first { $0.name == name }
     }
     
     func getFlags() -> [SDKFeatureFlag] {
-        return flagsStorage.map { $0.value }
+        return flagsStorage
     }
     
     func changeLocalState(name: String, value: Bool) {
-        flagsStorage[name]?.localState = value
+        guard let index = flagsStorage.firstIndex(where: { $0.name == name }) else { return }
+        flagsStorage[index].localState = value
     }
     
     func changeOverrideState(name: String, value: Bool) {
-        flagsStorage[name]?.isOverride = value
+        guard let index = flagsStorage.firstIndex(where: { $0.name == name }) else { return }
+        flagsStorage[index].isOverride = value
     }
     
     func clear() {
         flagsHash = nil
-        flagsStorage = [:]
+        flagsStorage = []
         FeatureTogglesLoggingService.shared.log(message: "Feature flags storage was cleared.")
     }
     
     func resetToDefaultValues() {
         guard !appFlags.isEmpty else {
-            flagsStorage.keys.forEach { key in
-                let remoteState = flagsStorage[key]?.remoteState ?? false
-                flagsStorage[key]?.localState = remoteState
-                flagsStorage[key]?.isOverride = false
+            for index in 0 ..< flagsStorage.count {
+                flagsStorage[index].localState = flagsStorage[index].remoteState ?? false
+                flagsStorage[index].isOverride = false
             }
             return
         }
         
-        flagsStorage.keys.forEach { key in
-            guard let localFlag = appFlags.first(where: { $0.uid == key }) else { return }
-            flagsStorage[key]?.localState = localFlag.defaultState
-            flagsStorage[key]?.isOverride = false
+        for index in 0 ..< flagsStorage.count {
+            guard let localFlag = appFlags.first(where: { $0.uid == flagsStorage[index].name }) else { return }
+            flagsStorage[index].localState = localFlag.defaultState
+            flagsStorage[index].isOverride = flagsStorage[index].isLocal
         }
     }
     

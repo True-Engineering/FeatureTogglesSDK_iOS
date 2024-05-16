@@ -12,7 +12,7 @@ final class UserDefaultsStorage {
     private let userDefaults = UserDefaults.standard
     private let cryptService = CryptService()
     
-    private var flags: [String: SDKFeatureFlag] = [:]
+    private var flags: [SDKFeatureFlag] = []
     private var appFlags: [any FeatureFlagsEnum]
     
     // MARK: - Init
@@ -32,13 +32,13 @@ extension UserDefaultsStorage {
     private func fetchFlagsFromStorage(appFlags: [any FeatureFlagsEnum] = []) {
         if let data = UserDefaults.standard.object(forKey: Constants.defaultStorageName) as? Data,
            let decryptedData = cryptService?.decrypt(data),
-           let flags = try? JSONDecoder().decode([String: SDKFeatureFlag].self, from: decryptedData) {
+           let flags = try? JSONDecoder().decode([SDKFeatureFlag].self, from: decryptedData) {
             self.flags = flags
         }
         
         let localFlags = appFlags
             .filter { appFlag in
-                !flags.keys.contains { appFlag.uid == $0 }
+                !flags.contains { appFlag.uid == $0.name }
             }.map {
                 SDKFeatureFlag(name: $0.uid,
                                description: $0.description,
@@ -46,14 +46,7 @@ extension UserDefaultsStorage {
             }
         
         if !localFlags.isEmpty {
-            save(flags: flags.values + localFlags)
-        }
-    }
-    
-    private func save(dictionary: [String: SDKFeatureFlag]) {
-        if let encodedData = try? JSONEncoder().encode(dictionary),
-           let encryptedData = cryptService?.encrypt(encodedData) {
-            userDefaults.set(encryptedData, forKey: Constants.defaultStorageName)
+            save(flags: flags + localFlags)
         }
     }
     
@@ -65,41 +58,48 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     
     func save(remoteFlags: [SDKFeatureFlag]) {
         if !appFlags.isEmpty {
-            flags.keys.forEach { key in
-                guard let remoteFlag = remoteFlags.first(where: { $0.name == key }) else {
-                    flags[key]?.isOverride = true
+            for index in 0 ..< flags.count {
+                guard let remoteFlag = remoteFlags.first(where: { $0.name == flags[index].name }) else {
+                    flags[index].isOverride = true
                     return
                 }
-                flags[key]?.description = remoteFlag.description
-                flags[key]?.remoteState = remoteFlag.remoteState
-                flags[key]?.group = remoteFlag.group
+                flags[index].description = remoteFlag.description
+                flags[index].remoteState = remoteFlag.remoteState
+                flags[index].group = remoteFlag.group
             }
         } else {
-            var dictionary: [String: SDKFeatureFlag] = [:]
-            remoteFlags.forEach { dictionary[$0.name] = $0 }
-            
-            dictionary.keys.forEach { key in
-                guard flags.keys.contains(where: { $0 == key }) else {
-                    flags[key] = dictionary[key]
+            remoteFlags.forEach { remoteFlag in
+                guard let index = flags.firstIndex(where: { $0.name == remoteFlag.name }) else {
+                    flags.append(remoteFlag)
                     return
                 }
-                flags[key]?.description = dictionary[key]?.description ?? ""
-                flags[key]?.remoteState = dictionary[key]?.remoteState ?? false
-                flags[key]?.group = dictionary[key]?.group
+                flags[index].description = remoteFlag.description
+                flags[index].remoteState = remoteFlag.remoteState
+                flags[index].group = remoteFlag.group
             }
         }
         
-        save(dictionary: flags)
+        save(flags: flags)
         
         FeatureTogglesLoggingService.shared.log(message: "Remote feature flags were saved.")
     }
     
+    func save() {
+        if let encodedData = try? JSONEncoder().encode(flags),
+           let encryptedData = cryptService?.encrypt(encodedData) {
+            userDefaults.set(encryptedData, forKey: Constants.defaultStorageName)
+        }
+             
+        FeatureTogglesLoggingService.shared.log(message: "Feature flags were saved.")
+    }
+    
     func save(flags: [SDKFeatureFlag]) {
-        var dictionary: [String: SDKFeatureFlag] = [:]
-        flags.forEach { dictionary[$0.name] = $0 }
+        if let encodedData = try? JSONEncoder().encode(flags),
+           let encryptedData = cryptService?.encrypt(encodedData) {
+            userDefaults.set(encryptedData, forKey: Constants.defaultStorageName)
+        }
         
-        self.flags = dictionary
-        save(dictionary: dictionary)
+        self.flags = flags
              
         FeatureTogglesLoggingService.shared.log(message: "Feature flags were saved.")
     }
@@ -111,7 +111,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     }
     
     func getByName(name: String) -> SDKFeatureFlag? {
-        return flags[name]
+        return flags.first { $0.name == name }
     }
     
     func getHash() -> String? {
@@ -119,17 +119,19 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     }
     
     func getFlags() -> [SDKFeatureFlag] {
-        return flags.map { $0.value }
+        return flags
     }
     
     func changeLocalState(name: String, value: Bool) {
-        flags[name]?.localState = value
-        save(dictionary: flags)
+        guard let index = flags.firstIndex(where: { $0.name == name }) else { return }
+        flags[index].localState = value
+        save()
     }
     
     func changeOverrideState(name: String, value: Bool) {
-        flags[name]?.isOverride = value
-        save(dictionary: flags)
+        guard let index = flags.firstIndex(where: { $0.name == name }) else { return }
+        flags[index].isOverride = value
+        save()
     }
     
     func clear() {
@@ -141,23 +143,21 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     
     func resetToDefaultValues() {
         guard !appFlags.isEmpty else {
-            flags.keys.forEach { key in
-                let remoteState = flags[key]?.remoteState ?? false
-                flags[key]?.localState = remoteState
-                flags[key]?.isOverride = false
+            for index in 0 ..< flags.count {
+                flags[index].localState = flags[index].remoteState ?? false
+                flags[index].isOverride = false
             }
-            save(dictionary: flags)
+            save()
             return
         }
         
-        flags.keys.forEach { key in
-            guard let localFlag = appFlags.first(where: { $0.uid == key }) else { return }
-            let isLocal = flags[key]?.isLocal ?? false
-            flags[key]?.localState = localFlag.defaultState
-            flags[key]?.isOverride = isLocal
+        for index in 0 ..< flags.count {
+            guard let localFlag = appFlags.first(where: { $0.uid == flags[index].name }) else { return }
+            flags[index].localState = localFlag.defaultState
+            flags[index].isOverride = flags[index].isLocal
         }
         
-        save(dictionary: flags)
+        save()
     }
     
 }

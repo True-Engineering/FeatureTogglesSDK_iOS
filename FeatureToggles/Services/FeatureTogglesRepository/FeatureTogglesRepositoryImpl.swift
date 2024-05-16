@@ -75,6 +75,7 @@ extension FeatureTogglesRepositoryImpl {
         lock.lock()
         storage.resetToDefaultValues()
         lock.unlock()
+        didUpdate?()
     }
     
 }
