@@ -19,5 +19,6 @@ protocol FeatureTogglesRepository {
     func changeOverrideState(name: String, value: Bool)
     
     func resetToDefaultValues()
+    func clear()
     
 }

@@ -127,6 +127,10 @@ extension FeatureTogglesSDK {
         repository.resetToDefaultValues()
     }
     
+    public func clearStorage() {
+        repository.clear()
+    }
+    
 }
 
 // MARK: - Interceptor methods
