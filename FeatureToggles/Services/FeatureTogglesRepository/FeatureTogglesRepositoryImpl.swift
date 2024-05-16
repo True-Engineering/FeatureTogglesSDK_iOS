@@ -31,14 +31,14 @@ extension FeatureTogglesRepositoryImpl {
         lock.unlock()
     }
     
-    func getByName(name: String) -> SDKFlag? {
+    func getByName(name: String) -> SDKFeatureFlag? {
         lock.lock()
         let flag = storage.getByName(name: name)
         lock.unlock()
         return flag
     }
     
-    func getFlags() -> [SDKFlag] {
+    func getFlags() -> [SDKFeatureFlag] {
         lock.lock()
         let flags = storage.getFlags()
         lock.unlock()
@@ -51,12 +51,30 @@ extension FeatureTogglesRepositoryImpl {
             self.lock.lock()
             self.storage.clear()
             self.storage.save(hash: featureToggles.hash)
-            self.storage.save(flags: featureToggles.flags)
+            self.storage.save(remoteFlags: featureToggles.flags)
             self.lock.unlock()
             DispatchQueue.main.async {
                 self.didUpdate?()
             }
         }
+    }
+    
+    func changeOverrideState(name: String, value: Bool) {
+        lock.lock()
+        storage.changeOverrideState(name: name, value: value)
+        lock.unlock()
+    }
+    
+    func changeLocalState(name: String, value: Bool) {
+        lock.lock()
+        storage.changeLocalState(name: name, value: value)
+        lock.unlock()
+    }
+    
+    func resetToDefaultValues() {
+        lock.lock()
+        storage.resetToDefaultValues()
+        lock.unlock()
     }
     
 }

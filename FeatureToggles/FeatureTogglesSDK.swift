@@ -37,16 +37,18 @@ public class FeatureTogglesSDK {
     /// - Parameters:
     ///   - storageType: Type of feature toggles storage.
     ///                 There are `inMemory`, `userDefaults` and `custom` storages.
-    ///                 Default value is `userDefaults`.
+    ///                 Default value is `userDefaults(appFlags: [])`.
+    ///                 - appFlags: your custom enum flags with FeatureFlagsEnum type. Use this parameter for local defenition of FF list.
+    ///                           if it is empty then SDK use all FF from server for storing
     ///   - headerKey: The header for hash in responses.
-    ///                 Default value is `FF-Hash`.
+    ///                Default value is `FF-Hash`.
     ///   - baseUrl: URL of host.
     ///   - apiFeaturePath: Path to method.
-    ///                 Default value is `/api/features`
+    ///                     Default value is `/api/features`
     ///   - featuresHeaders: Additional headers for feature toggles request.
-    ///                 If you don't use sdk interceptor for requests, you can add headers here.
-    ///                 Default value is `[:]`
-    public init(storageType: FeatureTogglesStorageType = .userDefaults,
+    ///                      If you don't use sdk interceptor for requests, you can add headers here.
+    ///                      Default value is `[:]`
+    public init(storageType: FeatureTogglesStorageType = .userDefaults(appFlags: []),
                 headerKey: String = Constants.defaultHeaderKey,
                 baseUrl: String,
                 apiFeaturesPath: String = Constants.defaultAPIFeaturesPath,
@@ -93,7 +95,7 @@ extension FeatureTogglesSDK {
     }
     
     /// Get flags from storage
-    public func getFlags() -> [SDKFlag] {
+    public func getFlags() -> [SDKFeatureFlag] {
         return repository.getFlags()
     }
     
@@ -107,6 +109,16 @@ extension FeatureTogglesSDK {
     /// Get flags from server and save to storage
     public func loadRemote() {
         repository.loadFeaturesFromRemote()
+    }
+    
+    // Change local state in storage
+    public func changeLocalState(name: String, value: Bool) {
+        repository.changeLocalState(name: name, value: value)
+    }
+    
+    // Change override state in storage. If override state is true then isEnabled will get local state
+    public func changeOverrideState(name: String, value: Bool) {
+        repository.changeOverrideState(name: name, value: value)
     }
     
 }
@@ -142,6 +154,12 @@ extension FeatureTogglesSDK {
         headers.forEach {
             addInterceptorHeader(header: $0.key, value: $0.value)
         }
+    }
+    
+    /// Reset local values to default values (your appFlag value or server value).
+    /// Reset isOverride to false for server flags
+    public func resetToDefaultValues() {
+        repository.resetToDefaultValues()
     }
     
 }

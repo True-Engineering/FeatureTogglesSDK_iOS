@@ -20,7 +20,7 @@ internal class FeatureFlagServiceImpl {
 
 extension FeatureFlagServiceImpl: FeatureFlagService {
     
-    func loadFeatureToggles(completion: @escaping ((SDKFlagsWithHash) -> Void)) {
+    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
         var request = URLRequest(url: url)
         
@@ -41,13 +41,13 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
                 return
             }
             
-            let featureFlags = featureFlagsWithHash.featureFlags.map { SDKFlag(name: $0.key,
-                                                                               isEnabled: $0.value.enable,
-                                                                               description: $0.value.description,
-                                                                               group: $0.value.group) }
+            let featureFlags = featureFlagsWithHash.featureFlags.map { SDKFeatureFlag(name: $0.key,
+                                                                                      description: $0.value.description,
+                                                                                      group: $0.value.group,
+                                                                                      isEnabled: $0.value.enable) }
             let hash = featureFlagsWithHash.featureFlagsHash
             
-            completion(SDKFlagsWithHash(flags: featureFlags, hash: hash))
+            completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash))
         }
         
         task.resume()
