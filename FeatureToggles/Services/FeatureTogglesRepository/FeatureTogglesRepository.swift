@@ -10,9 +10,14 @@ protocol FeatureTogglesRepository {
     
     func checkHash(hash: String?)
     
-    func getByName(name: String) -> SDKFlag?
-    func getFlags() -> [SDKFlag]
+    func getByName(name: String) -> SDKFeatureFlag?
+    func getFlags() -> [SDKFeatureFlag]
     
     func loadFeaturesFromRemote()
+    
+    func changeLocalState(name: String, value: Bool)
+    func changeOverrideState(name: String, value: Bool)
+    
+    func resetToDefaultValues()
     
 }
