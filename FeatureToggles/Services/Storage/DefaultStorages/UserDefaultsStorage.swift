@@ -30,12 +30,14 @@ final class UserDefaultsStorage {
 extension UserDefaultsStorage {
     
     private func fetchFlagsFromStorage(appFlags: [any FeatureFlagsEnum] = []) {
+        // Load flags from storage
         if let data = UserDefaults.standard.object(forKey: Constants.defaultStorageName) as? Data,
            let decryptedData = cryptService?.decrypt(data),
            let flags = try? JSONDecoder().decode([SDKFeatureFlag].self, from: decryptedData) {
             self.flags = flags
         }
         
+        // Add missed flags
         let localFlags = appFlags
             .filter { appFlag in
                 !flags.contains { appFlag.uid == $0.name }
@@ -45,9 +47,19 @@ extension UserDefaultsStorage {
                                localState: $0.defaultState)
             }
         
-        if !localFlags.isEmpty {
-            save(flags: flags + localFlags)
+        // Delete extra flags
+        if !appFlags.isEmpty,
+           flags.count != appFlags.count {
+            flags.forEach { flag in
+                if !appFlags.contains(where: { flag.name == $0.uid }),
+                   let index = flags.firstIndex(where: { $0.id == flag.id }) {
+                    flags.remove(at: index)
+                }
+            }
         }
+        
+        // Save
+        save(flags: flags + localFlags)
     }
     
 }
@@ -58,6 +70,11 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
     
     func save(remoteFlags: [SDKFeatureFlag]) {
         if !appFlags.isEmpty {
+            // If storage was cleared before
+            if flags.isEmpty {
+                fetchFlagsFromStorage(appFlags: appFlags)
+            }
+            
             for index in 0 ..< flags.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flags[index].name }) else {
                     flags[index].isOverride = true
@@ -76,6 +93,16 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
                 flags[index].description = remoteFlag.description
                 flags[index].remoteState = remoteFlag.remoteState
                 flags[index].group = remoteFlag.group
+            }
+            
+            // Delete extra flags
+            if flags.count != remoteFlags.count {
+                flags.forEach { flag in
+                    if !remoteFlags.contains(where: { flag.name == $0.name }),
+                       let index = flags.firstIndex(where: { $0.id == flag.id }) {
+                        flags.remove(at: index)
+                    }
+                }
             }
         }
         

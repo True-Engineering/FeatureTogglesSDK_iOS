@@ -44,6 +44,11 @@ extension InMemoryStorage: FeatureTogglesStorage {
     
     func save(remoteFlags: [SDKFeatureFlag]) {
         if !appFlags.isEmpty {
+            // If storage was cleared before
+            if flagsStorage.isEmpty {
+                fetchFlagsFromStorage(appFlags: appFlags)
+            }
+            
             for index in 0 ..< flagsStorage.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flagsStorage[index].name }) else {
                     flagsStorage[index].isOverride = true
@@ -62,6 +67,16 @@ extension InMemoryStorage: FeatureTogglesStorage {
                 flagsStorage[index].description = remoteFlag.description
                 flagsStorage[index].remoteState = remoteFlag.remoteState
                 flagsStorage[index].group = remoteFlag.group
+            }
+            
+            // Delete extra flags
+            if flagsStorage.count != remoteFlags.count {
+                flagsStorage.forEach { flag in
+                    if !remoteFlags.contains(where: { flag.name == $0.name }),
+                       let index = flagsStorage.firstIndex(where: { $0.id == flag.id }) {
+                        flagsStorage.remove(at: index)
+                    }
+                }
             }
         }
     }
