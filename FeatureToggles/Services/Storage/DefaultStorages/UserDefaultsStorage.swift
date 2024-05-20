@@ -30,36 +30,34 @@ final class UserDefaultsStorage {
 extension UserDefaultsStorage {
     
     private func fetchFlagsFromStorage(appFlags: [any FeatureFlagsEnum] = []) {
+        // Create flags from FeatureFlagsEnum
+        flags = appFlags.map {
+            SDKFeatureFlag(name: $0.uid,
+                           description: $0.description,
+                           localState: $0.defaultState)
+        }
+        
         // Load flags from storage
         if let data = UserDefaults.standard.object(forKey: Constants.defaultStorageName) as? Data,
            let decryptedData = cryptService?.decrypt(data),
-           let flags = try? JSONDecoder().decode([SDKFeatureFlag].self, from: decryptedData) {
-            self.flags = flags
-        }
-        
-        // Add missed flags
-        let localFlags = appFlags
-            .filter { appFlag in
-                !flags.contains { appFlag.uid == $0.name }
-            }.map {
-                SDKFeatureFlag(name: $0.uid,
-                               description: $0.description,
-                               localState: $0.defaultState)
-            }
-        
-        // Delete extra flags
-        if !appFlags.isEmpty,
-           flags.count != appFlags.count {
-            flags.forEach { flag in
-                if !appFlags.contains(where: { flag.name == $0.uid }),
-                   let index = flags.firstIndex(where: { $0.id == flag.id }) {
-                    flags.remove(at: index)
+           let storedFlags = try? JSONDecoder().decode([SDKFeatureFlag].self, from: decryptedData) {
+            if appFlags.isEmpty {
+                flags = storedFlags
+            } else {
+                var shouldSave = appFlags.count != storedFlags.count
+                storedFlags.forEach { flag in
+                    guard let index = flags.firstIndex(where: { $0.name == flag.name }) else {
+                        shouldSave = true
+                        return
+                    }
+                    flags[index] = flag
+                }
+                
+                if shouldSave {
+                    save(flags: flags)
                 }
             }
         }
-        
-        // Save
-        save(flags: flags + localFlags)
     }
     
 }
@@ -78,7 +76,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
             for index in 0 ..< flags.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flags[index].name }) else {
                     flags[index].isOverride = true
-                    return
+                    continue
                 }
                 flags[index].description = remoteFlag.description
                 flags[index].remoteState = remoteFlag.remoteState
@@ -180,7 +178,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
         }
         
         for index in 0 ..< flags.count {
-            guard let localFlag = appFlags.first(where: { $0.uid == flags[index].name }) else { return }
+            guard let localFlag = appFlags.first(where: { $0.uid == flags[index].name }) else { continue }
             flags[index].localState = localFlag.defaultState
             flags[index].isOverride = flags[index].isLocal
         }

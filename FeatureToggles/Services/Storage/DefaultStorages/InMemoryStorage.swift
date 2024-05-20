@@ -10,8 +10,7 @@ final class InMemoryStorage {
     
     init(appFlags: [any FeatureFlagsEnum]) {
         self.appFlags = appFlags
-        
-        fetchFlagsFromStorage(appFlags: appFlags)
+        fetchFlags(appFlags: appFlags)
     }
     
 }
@@ -21,19 +20,16 @@ final class InMemoryStorage {
 
 extension InMemoryStorage {
     
-    private func fetchFlagsFromStorage(appFlags: [any FeatureFlagsEnum] = []) {
+    private func fetchFlags(appFlags: [any FeatureFlagsEnum] = []) {
         guard !appFlags.isEmpty else { return }
         
-        let localFlags = appFlags
-            .filter { appFlag in
-                !flagsStorage.contains { appFlag.uid == $0.name }
-            }.map {
-                SDKFeatureFlag(name: $0.uid,
-                               description: $0.description,
-                               localState: $0.defaultState)
-            }
+        flagsStorage = appFlags.map {
+            SDKFeatureFlag(name: $0.uid,
+                           description: $0.description,
+                           localState: $0.defaultState)
+        }
         
-        save(flags: flagsStorage + localFlags)
+        save(flags: flagsStorage)
     }
     
 }
@@ -46,13 +42,13 @@ extension InMemoryStorage: FeatureTogglesStorage {
         if !appFlags.isEmpty {
             // If storage was cleared before
             if flagsStorage.isEmpty {
-                fetchFlagsFromStorage(appFlags: appFlags)
+                fetchFlags(appFlags: appFlags)
             }
             
             for index in 0 ..< flagsStorage.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flagsStorage[index].name }) else {
                     flagsStorage[index].isOverride = true
-                    return
+                    continue
                 }
                 flagsStorage[index].description = remoteFlag.description
                 flagsStorage[index].remoteState = remoteFlag.remoteState
@@ -130,7 +126,7 @@ extension InMemoryStorage: FeatureTogglesStorage {
         }
         
         for index in 0 ..< flagsStorage.count {
-            guard let localFlag = appFlags.first(where: { $0.uid == flagsStorage[index].name }) else { return }
+            guard let localFlag = appFlags.first(where: { $0.uid == flagsStorage[index].name }) else { continue }
             flagsStorage[index].localState = localFlag.defaultState
             flagsStorage[index].isOverride = flagsStorage[index].isLocal
         }
