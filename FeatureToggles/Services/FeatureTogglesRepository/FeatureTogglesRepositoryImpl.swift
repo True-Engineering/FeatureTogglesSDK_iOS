@@ -23,7 +23,7 @@ class FeatureTogglesRepositoryImpl: FeatureTogglesRepository {
 
 extension FeatureTogglesRepositoryImpl {
     
-    func checkHash(hash: String?) {
+    func checkHash(hash: String) {
         lock.lock()
         if storage.getHash() != hash {
             loadFeaturesFromRemote()

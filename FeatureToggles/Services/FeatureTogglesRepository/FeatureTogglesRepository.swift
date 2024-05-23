@@ -8,7 +8,7 @@ protocol FeatureTogglesRepository {
     
     // MARK: - Methods
     
-    func checkHash(hash: String?)
+    func checkHash(hash: String)
     
     func getByName(name: String) -> SDKFeatureFlag?
     func getFlags() -> [SDKFeatureFlag]
