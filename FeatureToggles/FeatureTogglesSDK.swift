@@ -102,7 +102,7 @@ extension FeatureTogglesSDK {
     /// Check hash in response headers and update storage if hash was changed.
     /// Use it if sdk interceptor doesn't fit to your project.
     public func obtainHash(headers: [String: String]) {
-        let hash = headers[headerKey]
+        guard let hash = headers[headerKey] else { return }
         repository.checkHash(hash: hash)
     }
     
