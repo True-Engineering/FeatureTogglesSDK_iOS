@@ -91,53 +91,64 @@ extension NetworkInterceptorUrlProtocol: URLSessionDataDelegate {
         client?.urlProtocol(self, didLoad: data)
     }
     
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+    func urlSession(_ session: URLSession, 
+                    dataTask: URLSessionDataTask,
+                    didReceive response: URLResponse,
+                    completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         let policy = URLCache.StoragePolicy(rawValue: request.cachePolicy.rawValue) ?? .notAllowed
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: policy)
         completionHandler(.allow)
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error = error {
+        if let error {
             client?.urlProtocol(self, didFailWithError: error)
         } else {
             client?.urlProtocolDidFinishLoading(self)
         }
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+    func urlSession(_ session: URLSession, 
+                    task: URLSessionTask,
+                    willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest,
+                    completionHandler: @escaping (URLRequest?) -> Void) {
         client?.urlProtocol(self, wasRedirectedTo: request, redirectResponse: response)
         completionHandler(request)
     }
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        guard let error = error else { return }
+        guard let error else { return }
         client?.urlProtocol(self, didFailWithError: error)
     }
     
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let protectionSpace = challenge.protectionSpace
-        let sender = challenge.sender
-        
-        if protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-            if let serverTrust = protectionSpace.serverTrust {
-                let credential = URLCredential(trust: serverTrust)
-                sender?.use(credential, for: challenge)
-                completionHandler(.useCredential, credential)
-                return
-            }
+    func urlSession(_ session: URLSession, 
+                    didReceive challenge: URLAuthenticationChallenge,
+                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let delegate = FeatureTogglesSDK.urlSessionDelegates.delegates.first else {
+            InterceptorService.shared.checkSessionChallenge(session: session, challenge: challenge, completionHandler: completionHandler)
+            return
         }
+        
+        delegate.interceptorURLSession(session, didReceive: challenge, completionHandler: completionHandler)
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         client?.urlProtocolDidFinishLoading(self)
     }
     
-//    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-//        if let url = task.currentRequest?.url {
-//            InterceptorService.shared.taskProgressDelegate?.task(url, didRecieveProgress: task.progress)
-//        }
-//    }
+    func urlSession(_ session: URLSession, 
+                    task: URLSessionTask,
+                    didSendBodyData bytesSent: Int64,
+                    totalBytesSent: Int64,
+                    totalBytesExpectedToSend: Int64) {
+        FeatureTogglesSDK.urlSessionDelegates.delegates.forEach {
+            $0.interceptorURLSession(session,
+                                     task: task,
+                                     didSendBodyData: bytesSent,
+                                     totalBytesSent: totalBytesSent,
+                                     totalBytesExpectedToSend: totalBytesExpectedToSend)
+        }
+    }
     
 }
-

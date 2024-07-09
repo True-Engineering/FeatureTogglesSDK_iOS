@@ -1,17 +1,25 @@
 import Foundation
+import CommonCrypto
 
-internal class FeatureFlagServiceImpl {
+internal class FeatureFlagServiceImpl: NSObject {
     
     // MARK: - Properties
     
     private var endpoint: String
     private var headers: [String: String] = [:]
+    private var session: URLSession?
+    private var interceptorService = InterceptorService.shared
     
     // MARK: - Init
     
-    init(endpoint: String, headers: [String: String]) {
+    init(endpoint: String,
+         headers: [String: String]) {
         self.endpoint = endpoint
         self.headers = headers
+        
+        super.init()
+        
+        session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }
     
 }
@@ -28,7 +36,7 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             request.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error  in
+        let task = session?.dataTask(with: request) { data, response, error  in
             guard let data else {
                 if let error {
                     FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
@@ -50,7 +58,92 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash))
         }
         
-        task.resume()
+        task?.resume()
+    }
+    
+}
+
+// MARK: - URLSessionDelegate
+
+extension FeatureFlagServiceImpl: URLSessionDelegate {
+    
+    private var rsa2048Asn1Header: [UInt8] {
+        return [
+            0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86,
+            0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f, 0x00
+        ]
+    }
+    
+    private func sha256(data: Data) -> String {
+        var keyWithHeader = Data(rsa2048Asn1Header)
+        keyWithHeader.append(data)
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        keyWithHeader.withUnsafeBytes { buffer in
+            _ = CC_SHA256(buffer.baseAddress!, CC_LONG(buffer.count), &hash)
+        }
+        return Data(hash).base64EncodedString()
+    }
+    
+    func urlSession(_ session: URLSession,
+                    didReceive challenge: URLAuthenticationChallenge,
+                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard challenge.protectionSpace.host == interceptorService.host,
+              (InterceptorService.shared.publicKeyHash != nil || InterceptorService.shared.certificates != nil) else {
+            completionHandler(.useCredential, nil)
+            return
+        }
+        
+        guard let serverTrust = challenge.protectionSpace.serverTrust,
+              SecTrustGetCertificateCount(serverTrust) > 0 else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            return
+        }
+        
+        if let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+            guard interceptorService.publicKeyHash != nil else {
+                checkCertificate(certificate: certificate, trust: serverTrust, completionHandler: completionHandler)
+                return
+            }
+            
+            checkKey(certificate: certificate, trust: serverTrust, completionHandler: completionHandler)
+        }
+    }
+    
+    private func checkCertificate(certificate: SecCertificate,
+                                  trust: SecTrust,
+                                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let certificates = interceptorService.certificates else {
+            completionHandler(.useCredential, nil)
+            return
+        }
+        
+        let data = SecCertificateCopyData(certificate) as Data
+                        
+        if certificates.contains(data) == true {
+            completionHandler(.useCredential, URLCredential(trust: trust))
+        } else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+        }
+    }
+    
+    private func checkKey(certificate: SecCertificate,
+                          trust: SecTrust,
+                          completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        // Server public key
+        let serverPublicKey = SecCertificateCopyKey(certificate)
+        
+        // Server public key data
+        let serverPublicKeyData = SecKeyCopyExternalRepresentation(serverPublicKey!, nil)!
+        let data: Data = serverPublicKeyData as Data
+        
+        // Server public key hash
+        let serverHashKey = sha256(data: data)
+        
+        if serverHashKey == interceptorService.publicKeyHash {
+            completionHandler(.useCredential, URLCredential(trust: trust))
+        } else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+        }
     }
     
 }

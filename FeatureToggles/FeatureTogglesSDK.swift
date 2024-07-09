@@ -15,12 +15,17 @@ public class FeatureTogglesSDK {
     private var headerKey: String
     private var featuresLink: String
     
-    public var delegate: FeatureTogglesSDKDelegate?
-    
     /// Intercept callback after request. You can use it for logging
     public var interceptRequest: ((RequestDataModel) -> Void)?
     /// Intercept callback after response. You can use it for logging
     public var interceptResponse: ((RequestDataModel) -> Void)?
+    
+    // MARK: - Delegates
+    
+    public weak var delegate: FeatureTogglesSDKDelegate?
+    
+    /// Delegates for ssl pinning and file loading
+    public static var urlSessionDelegates = InterceptorURLSessionDelegatesArray()
     
     // MARK: - Constants
     
@@ -47,11 +52,17 @@ public class FeatureTogglesSDK {
     ///   - featuresHeaders: Additional headers for feature toggles request.
     ///                      If you don't use sdk interceptor for requests, you can add headers here.
     ///                      Default value is `[:]`
+    ///   - certificates: Certificates for ssl-pinning.
+    ///                   Default value is `nil`
+    ///   - publicKeyHash: Public key hash for ssl-pinning.
+    ///                    Default value is `nil`
     public init(storageType: FeatureTogglesStorageType = .userDefaults(appFlags: []),
                 headerKey: String = Constants.defaultHeaderKey,
                 baseUrl: String,
                 apiFeaturesPath: String = Constants.defaultAPIFeaturesPath,
-                featuresHeaders: [String: String] = [:]) {
+                featuresHeaders: [String: String] = [:],
+                certificates: [Data]? = nil,
+                publicKeyHash: String? = nil) {
         if headerKey.isEmpty {
             print("FF header key have to be not empty!")
         }
@@ -61,6 +72,10 @@ public class FeatureTogglesSDK {
             print("FF base url have to be not empty!")
         }
         featuresLink = "\(baseUrl)\(apiFeaturesPath)"
+        
+        InterceptorService.shared.certificates = certificates
+        InterceptorService.shared.publicKeyHash = publicKeyHash
+        InterceptorService.shared.host = URL(string: baseUrl)?.host ?? ""
         
         let service = FeatureFlagServiceImpl(endpoint: featuresLink, headers: featuresHeaders)
         self.repository = FeatureTogglesRepositoryImpl(storage: storageType.storage, service: service)
