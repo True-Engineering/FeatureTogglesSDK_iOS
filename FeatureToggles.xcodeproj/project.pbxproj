@@ -47,6 +47,9 @@
 		8D3E0A1B2A80F05A00715496 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A1A2A80F05A00715496 /* String.swift */; };
 		8D9DC5402A56A57100593A30 /* FeatureToggles.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D9DC5322A56A57100593A30 /* FeatureToggles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8D9DC54C2A56AADA00593A30 /* FeatureTogglesSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */; };
+		8DBF36952C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */; };
+		8DBF36A62C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */; };
+		8DBF36AA2C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +99,9 @@
 		8DB879302ADD4EF400CBFA9E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8DB879312ADD4EF400CBFA9E /* NOTICE */ = {isa = PBXFileReference; lastKnownFileType = text; path = NOTICE; sourceTree = "<group>"; };
 		8DB879322ADD4EF400CBFA9E /* TEFeatureToggles.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = TEFeatureToggles.podspec; sourceTree = "<group>"; };
+		8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorURLSessionDelegate.swift; sourceTree = "<group>"; };
+		8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakInterceptorURLSessionDelegate.swift; sourceTree = "<group>"; };
+		8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorURLSessionDelegatesArray.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +254,8 @@
 			children = (
 				8D098DC62C3D3E3B00D2B70A /* PersistHelper.swift */,
 				8D098DEE2C3D3E3B00D2B70A /* ThreadSafe.swift */,
+				8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */,
+				8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -255,13 +263,13 @@
 		8D098DF72C3D3E3B00D2B70A /* Interceptor */ = {
 			isa = PBXGroup;
 			children = (
+				8DBF36932C3FEB96002928FC /* InterceptorService */,
 				8D098DBA2C3D3E3B00D2B70A /* Extension */,
 				8D098DC12C3D3E3B00D2B70A /* Models */,
 				8D098DC52C3D3E3B00D2B70A /* Observable */,
 				8D098DCE2C3D3E3B00D2B70A /* RequestModifier */,
 				8D098DE82C3D3E3B00D2B70A /* URLProtocol */,
 				8D098DEF2C3D3E3B00D2B70A /* Utils */,
-				8D098DF22C3D3E3B00D2B70A /* InterceptorService.swift */,
 				8D098DF32C3D3E3B00D2B70A /* NetworkInterceptor.swift */,
 				8D098DF42C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift */,
 				8D098DF52C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift */,
@@ -319,6 +327,15 @@
 				8D098D852C3D3D6000D2B70A /* SDKFeatureFlag.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		8DBF36932C3FEB96002928FC /* InterceptorService */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DF22C3D3E3B00D2B70A /* InterceptorService.swift */,
+				8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */,
+			);
+			path = InterceptorService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -420,14 +437,17 @@
 				8D098DA72C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift in Sources */,
 				8D098DA12C3D3D8100D2B70A /* FeatureTogglesRepository.swift in Sources */,
 				8D098E2F2C3D3E3B00D2B70A /* InterceptorService.swift in Sources */,
+				8DBF36AA2C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift in Sources */,
 				8D098E302C3D3E3B00D2B70A /* NetworkInterceptor.swift in Sources */,
 				8D098DAA2C3D3D8100D2B70A /* InMemoryStorage.swift in Sources */,
 				8D098E262C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift in Sources */,
 				8D098D882C3D3D6000D2B70A /* SDKFeatureFlag.swift in Sources */,
 				8D098DAC2C3D3D8100D2B70A /* FeatureTogglesStorage.swift in Sources */,
 				8D098E0B2C3D3E3B00D2B70A /* PersistHelper.swift in Sources */,
+				8DBF36A62C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift in Sources */,
 				8D098E352C3E59B300D2B70A /* URLRequest.swift in Sources */,
 				8D098E032C3D3E3B00D2B70A /* URLSessionConfiguration.swift in Sources */,
+				8DBF36952C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift in Sources */,
 				8D098DA32C3D3D8100D2B70A /* KeychainSwift.swift in Sources */,
 				8D098E242C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift in Sources */,
 				8D098E322C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift in Sources */,
