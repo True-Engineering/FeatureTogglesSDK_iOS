@@ -7,47 +7,90 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8D3E0A0E2A80C55600715496 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A0D2A80C55600715496 /* KeychainService.swift */; };
-		8D3E0A142A80D28100715496 /* KeychainSwiftAccessOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A112A80D28100715496 /* KeychainSwiftAccessOptions.swift */; };
-		8D3E0A152A80D28100715496 /* KeychainSwiftConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A122A80D28100715496 /* KeychainSwiftConstants.swift */; };
-		8D3E0A162A80D28100715496 /* KeychainSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A132A80D28100715496 /* KeychainSwift.swift */; };
+		8D098D872C3D3D6000D2B70A /* FeatureFlagsWithHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D842C3D3D6000D2B70A /* FeatureFlagsWithHash.swift */; };
+		8D098D882C3D3D6000D2B70A /* SDKFeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D852C3D3D6000D2B70A /* SDKFeatureFlag.swift */; };
+		8D098D892C3D3D6000D2B70A /* FeatureFlagsEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D862C3D3D6000D2B70A /* FeatureFlagsEnum.swift */; };
+		8D098DA02C3D3D8100D2B70A /* CryptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D8A2C3D3D8100D2B70A /* CryptService.swift */; };
+		8D098DA12C3D3D8100D2B70A /* FeatureTogglesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D8C2C3D3D8100D2B70A /* FeatureTogglesRepository.swift */; };
+		8D098DA22C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D8D2C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift */; };
+		8D098DA32C3D3D8100D2B70A /* KeychainSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D8F2C3D3D8100D2B70A /* KeychainSwift.swift */; };
+		8D098DA42C3D3D8100D2B70A /* KeychainSwiftAccessOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D902C3D3D8100D2B70A /* KeychainSwiftAccessOptions.swift */; };
+		8D098DA52C3D3D8100D2B70A /* KeychainSwiftConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D912C3D3D8100D2B70A /* KeychainSwiftConstants.swift */; };
+		8D098DA62C3D3D8100D2B70A /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D932C3D3D8100D2B70A /* KeychainService.swift */; };
+		8D098DA72C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D952C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift */; };
+		8D098DA82C3D3D8100D2B70A /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D972C3D3D8100D2B70A /* FeatureFlagService.swift */; };
+		8D098DA92C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D982C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift */; };
+		8D098DAA2C3D3D8100D2B70A /* InMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D9A2C3D3D8100D2B70A /* InMemoryStorage.swift */; };
+		8D098DAB2C3D3D8100D2B70A /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D9B2C3D3D8100D2B70A /* UserDefaultsStorage.swift */; };
+		8D098DAC2C3D3D8100D2B70A /* FeatureTogglesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098D9D2C3D3D8100D2B70A /* FeatureTogglesStorage.swift */; };
+		8D098DFC2C3D3E3B00D2B70A /* NSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DB22C3D3E3B00D2B70A /* NSNotification.swift */; };
+		8D098E032C3D3E3B00D2B70A /* URLSessionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DB92C3D3E3B00D2B70A /* URLSessionConfiguration.swift */; };
+		8D098E062C3D3E3B00D2B70A /* RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DBF2C3D3E3B00D2B70A /* RequestModel.swift */; };
+		8D098E082C3D3E3B00D2B70A /* RequestBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DC22C3D3E3B00D2B70A /* RequestBroadcast.swift */; };
+		8D098E092C3D3E3B00D2B70A /* RequestObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DC32C3D3E3B00D2B70A /* RequestObservable.swift */; };
+		8D098E0A2C3D3E3B00D2B70A /* RequestStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DC42C3D3E3B00D2B70A /* RequestStorage.swift */; };
+		8D098E0B2C3D3E3B00D2B70A /* PersistHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DC62C3D3E3B00D2B70A /* PersistHelper.swift */; };
+		8D098E0E2C3D3E3B00D2B70A /* InterceptorModfierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DCA2C3D3E3B00D2B70A /* InterceptorModfierProtocol.swift */; };
+		8D098E0F2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DCB2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift */; };
+		8D098E102C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DCC2C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift */; };
+		8D098E112C3D3E3B00D2B70A /* RequestEvaluatorModifierResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DCD2C3D3E3B00D2B70A /* RequestEvaluatorModifierResponse.swift */; };
+		8D098E232C3D3E3B00D2B70A /* NetworkIgnore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DE42C3D3E3B00D2B70A /* NetworkIgnore.swift */; };
+		8D098E242C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DE52C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift */; };
+		8D098E262C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DE72C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift */; };
+		8D098E2C2C3D3E3B00D2B70A /* ThreadSafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DEE2C3D3E3B00D2B70A /* ThreadSafe.swift */; };
+		8D098E2F2C3D3E3B00D2B70A /* InterceptorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DF22C3D3E3B00D2B70A /* InterceptorService.swift */; };
+		8D098E302C3D3E3B00D2B70A /* NetworkInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DF32C3D3E3B00D2B70A /* NetworkInterceptor.swift */; };
+		8D098E312C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DF42C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift */; };
+		8D098E322C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098DF52C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift */; };
+		8D098E352C3E59B300D2B70A /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098E342C3E59B300D2B70A /* URLRequest.swift */; };
 		8D3E0A192A80DD1F00715496 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A182A80DD1F00715496 /* Data.swift */; };
 		8D3E0A1B2A80F05A00715496 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A1A2A80F05A00715496 /* String.swift */; };
-		8D9B6CB72ACD85D600C2BC3D /* NetShears in Frameworks */ = {isa = PBXBuildFile; productRef = 8D9B6CB62ACD85D600C2BC3D /* NetShears */; };
 		8D9DC5402A56A57100593A30 /* FeatureToggles.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D9DC5322A56A57100593A30 /* FeatureToggles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8D9DC54C2A56AADA00593A30 /* FeatureTogglesSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */; };
-		8D9DC5512A56AB5800593A30 /* FeatureTogglesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5502A56AB5800593A30 /* FeatureTogglesStorage.swift */; };
-		8D9DC5532A56AC1300593A30 /* FeatureTogglesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5522A56AC1300593A30 /* FeatureTogglesRepository.swift */; };
-		8D9DC5552A56AC7A00593A30 /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5542A56AC7A00593A30 /* FeatureFlagService.swift */; };
-		8D9DC55D2A56AD7700593A30 /* SDKFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC55C2A56AD7700593A30 /* SDKFlag.swift */; };
-		8D9DC5612A56AE1800593A30 /* FeatureFlagServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5602A56AE1800593A30 /* FeatureFlagServiceImpl.swift */; };
-		8D9DC5632A56AE2C00593A30 /* FeatureFlagsWithHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5622A56AE2C00593A30 /* FeatureFlagsWithHash.swift */; };
-		8D9DC5652A56AE5000593A30 /* FeatureTogglesRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5642A56AE5000593A30 /* FeatureTogglesRepositoryImpl.swift */; };
-		8D9DC5672A56AE8400593A30 /* InMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5662A56AE8400593A30 /* InMemoryStorage.swift */; };
-		8D9DC5692A56AE9C00593A30 /* UserDefaultsPreferencesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC5682A56AE9C00593A30 /* UserDefaultsPreferencesStorage.swift */; };
-		8D9DC57C2A582B8800593A30 /* CryptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC57B2A582B8800593A30 /* CryptService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8D3E0A0D2A80C55600715496 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
-		8D3E0A112A80D28100715496 /* KeychainSwiftAccessOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftAccessOptions.swift; sourceTree = "<group>"; };
-		8D3E0A122A80D28100715496 /* KeychainSwiftConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftConstants.swift; sourceTree = "<group>"; };
-		8D3E0A132A80D28100715496 /* KeychainSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwift.swift; sourceTree = "<group>"; };
+		8D098D842C3D3D6000D2B70A /* FeatureFlagsWithHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagsWithHash.swift; sourceTree = "<group>"; };
+		8D098D852C3D3D6000D2B70A /* SDKFeatureFlag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKFeatureFlag.swift; sourceTree = "<group>"; };
+		8D098D862C3D3D6000D2B70A /* FeatureFlagsEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagsEnum.swift; sourceTree = "<group>"; };
+		8D098D8A2C3D3D8100D2B70A /* CryptService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptService.swift; sourceTree = "<group>"; };
+		8D098D8C2C3D3D8100D2B70A /* FeatureTogglesRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureTogglesRepository.swift; sourceTree = "<group>"; };
+		8D098D8D2C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureTogglesRepositoryImpl.swift; sourceTree = "<group>"; };
+		8D098D8F2C3D3D8100D2B70A /* KeychainSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwift.swift; sourceTree = "<group>"; };
+		8D098D902C3D3D8100D2B70A /* KeychainSwiftAccessOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftAccessOptions.swift; sourceTree = "<group>"; };
+		8D098D912C3D3D8100D2B70A /* KeychainSwiftConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftConstants.swift; sourceTree = "<group>"; };
+		8D098D932C3D3D8100D2B70A /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		8D098D952C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureTogglesLoggingService.swift; sourceTree = "<group>"; };
+		8D098D972C3D3D8100D2B70A /* FeatureFlagService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
+		8D098D982C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagServiceImpl.swift; sourceTree = "<group>"; };
+		8D098D9A2C3D3D8100D2B70A /* InMemoryStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryStorage.swift; sourceTree = "<group>"; };
+		8D098D9B2C3D3D8100D2B70A /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
+		8D098D9D2C3D3D8100D2B70A /* FeatureTogglesStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureTogglesStorage.swift; sourceTree = "<group>"; };
+		8D098DB22C3D3E3B00D2B70A /* NSNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotification.swift; sourceTree = "<group>"; };
+		8D098DB92C3D3E3B00D2B70A /* URLSessionConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionConfiguration.swift; sourceTree = "<group>"; };
+		8D098DBF2C3D3E3B00D2B70A /* RequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestModel.swift; sourceTree = "<group>"; };
+		8D098DC22C3D3E3B00D2B70A /* RequestBroadcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBroadcast.swift; sourceTree = "<group>"; };
+		8D098DC32C3D3E3B00D2B70A /* RequestObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestObservable.swift; sourceTree = "<group>"; };
+		8D098DC42C3D3E3B00D2B70A /* RequestStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStorage.swift; sourceTree = "<group>"; };
+		8D098DC62C3D3E3B00D2B70A /* PersistHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistHelper.swift; sourceTree = "<group>"; };
+		8D098DCA2C3D3E3B00D2B70A /* InterceptorModfierProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterceptorModfierProtocol.swift; sourceTree = "<group>"; };
+		8D098DCB2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestEvaluatorModifierEndpoint.swift; sourceTree = "<group>"; };
+		8D098DCC2C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestEvaluatorModifierHeader.swift; sourceTree = "<group>"; };
+		8D098DCD2C3D3E3B00D2B70A /* RequestEvaluatorModifierResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestEvaluatorModifierResponse.swift; sourceTree = "<group>"; };
+		8D098DE42C3D3E3B00D2B70A /* NetworkIgnore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkIgnore.swift; sourceTree = "<group>"; };
+		8D098DE52C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkInterceptorUrlProtocol.swift; sourceTree = "<group>"; };
+		8D098DE72C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkListenerUrlProtocol.swift; sourceTree = "<group>"; };
+		8D098DEE2C3D3E3B00D2B70A /* ThreadSafe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadSafe.swift; sourceTree = "<group>"; };
+		8D098DF22C3D3E3B00D2B70A /* InterceptorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterceptorService.swift; sourceTree = "<group>"; };
+		8D098DF32C3D3E3B00D2B70A /* NetworkInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkInterceptor.swift; sourceTree = "<group>"; };
+		8D098DF42C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkInterceptorConfig.swift; sourceTree = "<group>"; };
+		8D098DF52C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequestInterceptor.swift; sourceTree = "<group>"; };
+		8D098E342C3E59B300D2B70A /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		8D3E0A182A80DD1F00715496 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		8D3E0A1A2A80F05A00715496 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		8D9DC52F2A56A57100593A30 /* FeatureToggles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatureToggles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D9DC5322A56A57100593A30 /* FeatureToggles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatureToggles.h; sourceTree = "<group>"; };
 		8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTogglesSDK.swift; sourceTree = "<group>"; };
-		8D9DC5502A56AB5800593A30 /* FeatureTogglesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTogglesStorage.swift; sourceTree = "<group>"; };
-		8D9DC5522A56AC1300593A30 /* FeatureTogglesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTogglesRepository.swift; sourceTree = "<group>"; };
-		8D9DC5542A56AC7A00593A30 /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
-		8D9DC55C2A56AD7700593A30 /* SDKFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKFlag.swift; sourceTree = "<group>"; };
-		8D9DC5602A56AE1800593A30 /* FeatureFlagServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagServiceImpl.swift; sourceTree = "<group>"; };
-		8D9DC5622A56AE2C00593A30 /* FeatureFlagsWithHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsWithHash.swift; sourceTree = "<group>"; };
-		8D9DC5642A56AE5000593A30 /* FeatureTogglesRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTogglesRepositoryImpl.swift; sourceTree = "<group>"; };
-		8D9DC5662A56AE8400593A30 /* InMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryStorage.swift; sourceTree = "<group>"; };
-		8D9DC5682A56AE9C00593A30 /* UserDefaultsPreferencesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesStorage.swift; sourceTree = "<group>"; };
-		8D9DC57B2A582B8800593A30 /* CryptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptService.swift; sourceTree = "<group>"; };
 		8DB0E8382AC199590025DA05 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		8DB0E8392AC1B7CA0025DA05 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8DB879302ADD4EF400CBFA9E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -60,30 +103,170 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D9B6CB72ACD85D600C2BC3D /* NetShears in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8D3E0A0F2A80D21D00715496 /* Keychain */ = {
+		8D098D8B2C3D3D8100D2B70A /* CryptService */ = {
 			isa = PBXGroup;
 			children = (
-				8D3E0A102A80D25100715496 /* KeychainSwift */,
-				8D3E0A0D2A80C55600715496 /* KeychainService.swift */,
+				8D098D8A2C3D3D8100D2B70A /* CryptService.swift */,
+			);
+			path = CryptService;
+			sourceTree = "<group>";
+		};
+		8D098D8E2C3D3D8100D2B70A /* FeatureTogglesRepository */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D8C2C3D3D8100D2B70A /* FeatureTogglesRepository.swift */,
+				8D098D8D2C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift */,
+			);
+			path = FeatureTogglesRepository;
+			sourceTree = "<group>";
+		};
+		8D098D922C3D3D8100D2B70A /* KeychainSwift */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D8F2C3D3D8100D2B70A /* KeychainSwift.swift */,
+				8D098D902C3D3D8100D2B70A /* KeychainSwiftAccessOptions.swift */,
+				8D098D912C3D3D8100D2B70A /* KeychainSwiftConstants.swift */,
+			);
+			path = KeychainSwift;
+			sourceTree = "<group>";
+		};
+		8D098D942C3D3D8100D2B70A /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D922C3D3D8100D2B70A /* KeychainSwift */,
+				8D098D932C3D3D8100D2B70A /* KeychainService.swift */,
 			);
 			path = Keychain;
 			sourceTree = "<group>";
 		};
-		8D3E0A102A80D25100715496 /* KeychainSwift */ = {
+		8D098D962C3D3D8100D2B70A /* LoggingService */ = {
 			isa = PBXGroup;
 			children = (
-				8D3E0A132A80D28100715496 /* KeychainSwift.swift */,
-				8D3E0A112A80D28100715496 /* KeychainSwiftAccessOptions.swift */,
-				8D3E0A122A80D28100715496 /* KeychainSwiftConstants.swift */,
+				8D098D952C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift */,
 			);
-			path = KeychainSwift;
+			path = LoggingService;
+			sourceTree = "<group>";
+		};
+		8D098D992C3D3D8100D2B70A /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D972C3D3D8100D2B70A /* FeatureFlagService.swift */,
+				8D098D982C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		8D098D9C2C3D3D8100D2B70A /* DefaultStorages */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D9A2C3D3D8100D2B70A /* InMemoryStorage.swift */,
+				8D098D9B2C3D3D8100D2B70A /* UserDefaultsStorage.swift */,
+			);
+			path = DefaultStorages;
+			sourceTree = "<group>";
+		};
+		8D098D9E2C3D3D8100D2B70A /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				8D098D9C2C3D3D8100D2B70A /* DefaultStorages */,
+				8D098D9D2C3D3D8100D2B70A /* FeatureTogglesStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		8D098D9F2C3D3D8100D2B70A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DF72C3D3E3B00D2B70A /* Interceptor */,
+				8D098D8B2C3D3D8100D2B70A /* CryptService */,
+				8D098D8E2C3D3D8100D2B70A /* FeatureTogglesRepository */,
+				8D098D942C3D3D8100D2B70A /* Keychain */,
+				8D098D962C3D3D8100D2B70A /* LoggingService */,
+				8D098D992C3D3D8100D2B70A /* Networking */,
+				8D098D9E2C3D3D8100D2B70A /* Storage */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8D098DBA2C3D3E3B00D2B70A /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DB22C3D3E3B00D2B70A /* NSNotification.swift */,
+				8D098DB92C3D3E3B00D2B70A /* URLSessionConfiguration.swift */,
+				8D098E342C3E59B300D2B70A /* URLRequest.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		8D098DC12C3D3E3B00D2B70A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DBF2C3D3E3B00D2B70A /* RequestModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8D098DC52C3D3E3B00D2B70A /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DC22C3D3E3B00D2B70A /* RequestBroadcast.swift */,
+				8D098DC32C3D3E3B00D2B70A /* RequestObservable.swift */,
+				8D098DC42C3D3E3B00D2B70A /* RequestStorage.swift */,
+			);
+			path = Observable;
+			sourceTree = "<group>";
+		};
+		8D098DCE2C3D3E3B00D2B70A /* RequestModifier */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DCA2C3D3E3B00D2B70A /* InterceptorModfierProtocol.swift */,
+				8D098DCB2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift */,
+				8D098DCC2C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift */,
+				8D098DCD2C3D3E3B00D2B70A /* RequestEvaluatorModifierResponse.swift */,
+			);
+			path = RequestModifier;
+			sourceTree = "<group>";
+		};
+		8D098DE82C3D3E3B00D2B70A /* URLProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DE42C3D3E3B00D2B70A /* NetworkIgnore.swift */,
+				8D098DE52C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift */,
+				8D098DE72C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift */,
+			);
+			path = URLProtocol;
+			sourceTree = "<group>";
+		};
+		8D098DEF2C3D3E3B00D2B70A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DC62C3D3E3B00D2B70A /* PersistHelper.swift */,
+				8D098DEE2C3D3E3B00D2B70A /* ThreadSafe.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		8D098DF72C3D3E3B00D2B70A /* Interceptor */ = {
+			isa = PBXGroup;
+			children = (
+				8D098DBA2C3D3E3B00D2B70A /* Extension */,
+				8D098DC12C3D3E3B00D2B70A /* Models */,
+				8D098DC52C3D3E3B00D2B70A /* Observable */,
+				8D098DCE2C3D3E3B00D2B70A /* RequestModifier */,
+				8D098DE82C3D3E3B00D2B70A /* URLProtocol */,
+				8D098DEF2C3D3E3B00D2B70A /* Utils */,
+				8D098DF22C3D3E3B00D2B70A /* InterceptorService.swift */,
+				8D098DF32C3D3E3B00D2B70A /* NetworkInterceptor.swift */,
+				8D098DF42C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift */,
+				8D098DF52C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift */,
+			);
+			path = Interceptor;
 			sourceTree = "<group>";
 		};
 		8D3E0A172A80DD0500715496 /* Extensions */ = {
@@ -93,15 +276,6 @@
 				8D3E0A1A2A80F05A00715496 /* String.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		8D3E0A1C2A80F07500715496 /* CryptService */ = {
-			isa = PBXGroup;
-			children = (
-				8D3E0A0F2A80D21D00715496 /* Keychain */,
-				8D9DC57B2A582B8800593A30 /* CryptService.swift */,
-			);
-			path = CryptService;
 			sourceTree = "<group>";
 		};
 		8D9DC5252A56A57100593A30 = {
@@ -128,61 +302,23 @@
 		8D9DC5312A56A57100593A30 /* FeatureToggles */ = {
 			isa = PBXGroup;
 			children = (
-				8D9DC5322A56A57100593A30 /* FeatureToggles.h */,
-				8D9DC54D2A56AB1A00593A30 /* Domain */,
 				8D9DC5562A56ACAC00593A30 /* Data */,
+				8D3E0A172A80DD0500715496 /* Extensions */,
+				8D098D9F2C3D3D8100D2B70A /* Services */,
+				8D9DC5322A56A57100593A30 /* FeatureToggles.h */,
 				8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */,
 			);
 			path = FeatureToggles;
 			sourceTree = "<group>";
 		};
-		8D9DC54D2A56AB1A00593A30 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				8D9DC5502A56AB5800593A30 /* FeatureTogglesStorage.swift */,
-				8D9DC5522A56AC1300593A30 /* FeatureTogglesRepository.swift */,
-				8D9DC5542A56AC7A00593A30 /* FeatureFlagService.swift */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
 		8D9DC5562A56ACAC00593A30 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				8D3E0A172A80DD0500715496 /* Extensions */,
-				8D9DC55A2A56AD3200593A30 /* Storage */,
-				8D9DC5592A56AD2200593A30 /* Service */,
-				8D9DC5642A56AE5000593A30 /* FeatureTogglesRepositoryImpl.swift */,
+				8D098D862C3D3D6000D2B70A /* FeatureFlagsEnum.swift */,
+				8D098D842C3D3D6000D2B70A /* FeatureFlagsWithHash.swift */,
+				8D098D852C3D3D6000D2B70A /* SDKFeatureFlag.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		8D9DC5592A56AD2200593A30 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				8D3E0A1C2A80F07500715496 /* CryptService */,
-				8D9DC5602A56AE1800593A30 /* FeatureFlagServiceImpl.swift */,
-				8D9DC5622A56AE2C00593A30 /* FeatureFlagsWithHash.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		8D9DC55A2A56AD3200593A30 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				8D9DC56A2A56BC3E00593A30 /* Model */,
-				8D9DC5662A56AE8400593A30 /* InMemoryStorage.swift */,
-				8D9DC5682A56AE9C00593A30 /* UserDefaultsPreferencesStorage.swift */,
-			);
-			path = Storage;
-			sourceTree = "<group>";
-		};
-		8D9DC56A2A56BC3E00593A30 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				8D9DC55C2A56AD7700593A30 /* SDKFlag.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,7 +350,6 @@
 			);
 			name = FeatureToggles;
 			packageProductDependencies = (
-				8D9B6CB62ACD85D600C2BC3D /* NetShears */,
 			);
 			productName = FeatureToggles;
 			productReference = 8D9DC52F2A56A57100593A30 /* FeatureToggles.framework */;
@@ -245,7 +380,6 @@
 			);
 			mainGroup = 8D9DC5252A56A57100593A30;
 			packageReferences = (
-				8D9B6CB52ACD85D600C2BC3D /* XCRemoteSwiftPackageReference "NetShears" */,
 			);
 			productRefGroup = 8D9DC5302A56A57100593A30 /* Products */;
 			projectDirPath = "";
@@ -271,23 +405,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D098DA92C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift in Sources */,
+				8D098E082C3D3E3B00D2B70A /* RequestBroadcast.swift in Sources */,
+				8D098DA42C3D3D8100D2B70A /* KeychainSwiftAccessOptions.swift in Sources */,
 				8D9DC54C2A56AADA00593A30 /* FeatureTogglesSDK.swift in Sources */,
-				8D9DC5512A56AB5800593A30 /* FeatureTogglesStorage.swift in Sources */,
+				8D098E0E2C3D3E3B00D2B70A /* InterceptorModfierProtocol.swift in Sources */,
+				8D098E312C3D3E3B00D2B70A /* NetworkInterceptorConfig.swift in Sources */,
+				8D098E092C3D3E3B00D2B70A /* RequestObservable.swift in Sources */,
+				8D098E232C3D3E3B00D2B70A /* NetworkIgnore.swift in Sources */,
+				8D098E0F2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift in Sources */,
+				8D098DA22C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift in Sources */,
+				8D098E102C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift in Sources */,
 				8D3E0A1B2A80F05A00715496 /* String.swift in Sources */,
-				8D9DC5552A56AC7A00593A30 /* FeatureFlagService.swift in Sources */,
-				8D9DC5652A56AE5000593A30 /* FeatureTogglesRepositoryImpl.swift in Sources */,
-				8D3E0A142A80D28100715496 /* KeychainSwiftAccessOptions.swift in Sources */,
-				8D9DC5632A56AE2C00593A30 /* FeatureFlagsWithHash.swift in Sources */,
-				8D9DC57C2A582B8800593A30 /* CryptService.swift in Sources */,
-				8D9DC5612A56AE1800593A30 /* FeatureFlagServiceImpl.swift in Sources */,
-				8D9DC5692A56AE9C00593A30 /* UserDefaultsPreferencesStorage.swift in Sources */,
-				8D3E0A0E2A80C55600715496 /* KeychainService.swift in Sources */,
-				8D9DC5532A56AC1300593A30 /* FeatureTogglesRepository.swift in Sources */,
-				8D3E0A152A80D28100715496 /* KeychainSwiftConstants.swift in Sources */,
-				8D9DC55D2A56AD7700593A30 /* SDKFlag.swift in Sources */,
-				8D9DC5672A56AE8400593A30 /* InMemoryStorage.swift in Sources */,
+				8D098DA72C3D3D8100D2B70A /* FeatureTogglesLoggingService.swift in Sources */,
+				8D098DA12C3D3D8100D2B70A /* FeatureTogglesRepository.swift in Sources */,
+				8D098E2F2C3D3E3B00D2B70A /* InterceptorService.swift in Sources */,
+				8D098E302C3D3E3B00D2B70A /* NetworkInterceptor.swift in Sources */,
+				8D098DAA2C3D3D8100D2B70A /* InMemoryStorage.swift in Sources */,
+				8D098E262C3D3E3B00D2B70A /* NetworkListenerUrlProtocol.swift in Sources */,
+				8D098D882C3D3D6000D2B70A /* SDKFeatureFlag.swift in Sources */,
+				8D098DAC2C3D3D8100D2B70A /* FeatureTogglesStorage.swift in Sources */,
+				8D098E0B2C3D3E3B00D2B70A /* PersistHelper.swift in Sources */,
+				8D098E352C3E59B300D2B70A /* URLRequest.swift in Sources */,
+				8D098E032C3D3E3B00D2B70A /* URLSessionConfiguration.swift in Sources */,
+				8D098DA32C3D3D8100D2B70A /* KeychainSwift.swift in Sources */,
+				8D098E242C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift in Sources */,
+				8D098E322C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift in Sources */,
+				8D098DA62C3D3D8100D2B70A /* KeychainService.swift in Sources */,
+				8D098D872C3D3D6000D2B70A /* FeatureFlagsWithHash.swift in Sources */,
+				8D098E062C3D3E3B00D2B70A /* RequestModel.swift in Sources */,
+				8D098DA82C3D3D8100D2B70A /* FeatureFlagService.swift in Sources */,
+				8D098DFC2C3D3E3B00D2B70A /* NSNotification.swift in Sources */,
+				8D098E2C2C3D3E3B00D2B70A /* ThreadSafe.swift in Sources */,
+				8D098E112C3D3E3B00D2B70A /* RequestEvaluatorModifierResponse.swift in Sources */,
+				8D098E0A2C3D3E3B00D2B70A /* RequestStorage.swift in Sources */,
+				8D098DA02C3D3D8100D2B70A /* CryptService.swift in Sources */,
+				8D098DA52C3D3D8100D2B70A /* KeychainSwiftConstants.swift in Sources */,
+				8D098D892C3D3D6000D2B70A /* FeatureFlagsEnum.swift in Sources */,
+				8D098DAB2C3D3D8100D2B70A /* UserDefaultsStorage.swift in Sources */,
 				8D3E0A192A80DD1F00715496 /* Data.swift in Sources */,
-				8D3E0A162A80D28100715496 /* KeychainSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,25 +650,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		8D9B6CB52ACD85D600C2BC3D /* XCRemoteSwiftPackageReference "NetShears" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/divar-ir/NetShears.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8D9B6CB62ACD85D600C2BC3D /* NetShears */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8D9B6CB52ACD85D600C2BC3D /* XCRemoteSwiftPackageReference "NetShears" */;
-			productName = NetShears;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8D9DC5262A56A57100593A30 /* Project object */;
 }

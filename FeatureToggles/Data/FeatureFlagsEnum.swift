@@ -1,10 +1,3 @@
-//
-//  FeatureFlagsEnum.swift
-//
-//
-//  Created by Anastasia on 15.05.2024.
-//
-
 import Foundation
 
 public protocol FeatureFlagsEnum: CaseIterable {

@@ -12,13 +12,11 @@ let package = Package(
             name: "FeatureToggles",
             targets: ["FeatureToggles"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/divar-ir/NetShears.git", from: "3.2.3"),
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "FeatureToggles",
-            dependencies: ["NetShears"],
+            dependencies: [],
             path: "FeatureToggles"),
     ]
 )

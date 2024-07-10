@@ -1,5 +1,4 @@
 import Foundation
-import NetShears
 
 public protocol FeatureTogglesSDKDelegate: AnyObject {
     
@@ -19,14 +18,14 @@ public class FeatureTogglesSDK {
     public var delegate: FeatureTogglesSDKDelegate?
     
     /// Intercept callback after request. You can use it for logging
-    public var interceptRequest: ((NetShearsRequestModel) -> Void)?
+    public var interceptRequest: ((RequestDataModel) -> Void)?
     /// Intercept callback after response. You can use it for logging
-    public var interceptResponse: ((NetShearsRequestModel) -> Void)?
+    public var interceptResponse: ((RequestDataModel) -> Void)?
     
     // MARK: - Constants
     
     public enum Constants {
-        public static let defaultHeaderKey = "FF-Hash"
+        public static let defaultHeaderKey = "ff-hash"
         public static let defaultAPIFeaturesPath = "/api/features"
     }
     
@@ -41,7 +40,7 @@ public class FeatureTogglesSDK {
     ///                 - appFlags: your custom enum flags with FeatureFlagsEnum type. Use this parameter for local defenition of FF list.
     ///                           if it is empty then SDK use all FF from server for storing
     ///   - headerKey: The header for hash in responses.
-    ///                Default value is `FF-Hash`.
+    ///                Default value is `ff-hash`.
     ///   - baseUrl: URL of host.
     ///   - apiFeaturePath: Path to method.
     ///                     Default value is `/api/features`
@@ -69,8 +68,8 @@ public class FeatureTogglesSDK {
             self?.delegate?.didFeatureTogglesStorageUpdate()
         }
         
-        NetShears.shared.modifiedList().forEach { _ in
-            NetShears.shared.removeModifier(at: 0)
+        InterceptorService.shared.modifiedList().forEach { _ in
+            InterceptorService.shared.removeModifier(at: 0)
         }
     }
     
@@ -139,15 +138,15 @@ extension FeatureTogglesSDK {
     
     /// Start automatic feature toggles updation
     public func startInterceptor() {
-        NetShears.shared.startInterceptor()
-        NetShears.shared.startListener()
+        InterceptorService.shared.startInterceptor()
+        InterceptorService.shared.startListener()
         RequestBroadcast.shared.setDelegate(self)
     }
     
     /// Stop automatic feature toggles updation
     public func stopInterceptor() {
-        NetShears.shared.stopInterceptor()
-        NetShears.shared.stopListener()
+        InterceptorService.shared.stopInterceptor()
+        InterceptorService.shared.stopListener()
     }
     
     /// If you start interceptor, you can add header for all requests, which will intercept
@@ -155,7 +154,7 @@ extension FeatureTogglesSDK {
     public func addInterceptorHeader(header: String, value: String) {
         let header = HeaderModifyModel(key: header, value: value)
         let headerModifier = RequestEvaluatorModifierHeader(header: header)
-        NetShears.shared.modify(modifier: headerModifier)
+        InterceptorService.shared.modify(modifier: headerModifier)
     }
     
     /// If you start interceptor, you can add headers for all requests, which will intercept
@@ -172,7 +171,7 @@ extension FeatureTogglesSDK {
 
 extension FeatureTogglesSDK: RequestBroadcastDelegate {
     
-    public func newRequestArrived(_ request: NetShearsRequestModel) {
+    public func newRequestArrived(_ request: RequestDataModel) {
         guard let responseHeaders = request.responseHeaders else {
             interceptRequest?(request)
             return

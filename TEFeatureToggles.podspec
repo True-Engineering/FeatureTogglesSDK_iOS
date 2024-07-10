@@ -15,5 +15,4 @@ TEFeatureToggles is an SDK for interacting with a microservice, allowing you to 
   s.ios.deployment_target = '13.0'
 
   s.source_files = 'FeatureToggles/**/*'
-  s.dependency 'NetShears'
 end
