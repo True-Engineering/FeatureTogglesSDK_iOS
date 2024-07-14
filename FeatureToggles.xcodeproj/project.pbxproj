@@ -45,6 +45,7 @@
 		8D098E352C3E59B300D2B70A /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D098E342C3E59B300D2B70A /* URLRequest.swift */; };
 		8D3E0A192A80DD1F00715496 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A182A80DD1F00715496 /* Data.swift */; };
 		8D3E0A1B2A80F05A00715496 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E0A1A2A80F05A00715496 /* String.swift */; };
+		8D99191C2C449B1E00A51408 /* AuthenticationChallengeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D99191B2C449B1E00A51408 /* AuthenticationChallengeSender.swift */; };
 		8D9DC5402A56A57100593A30 /* FeatureToggles.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D9DC5322A56A57100593A30 /* FeatureToggles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8D9DC54C2A56AADA00593A30 /* FeatureTogglesSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */; };
 		8DBF36952C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */; };
@@ -91,6 +92,7 @@
 		8D098E342C3E59B300D2B70A /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		8D3E0A182A80DD1F00715496 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		8D3E0A1A2A80F05A00715496 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		8D99191B2C449B1E00A51408 /* AuthenticationChallengeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationChallengeSender.swift; sourceTree = "<group>"; };
 		8D9DC52F2A56A57100593A30 /* FeatureToggles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatureToggles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D9DC5322A56A57100593A30 /* FeatureToggles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatureToggles.h; sourceTree = "<group>"; };
 		8D9DC54B2A56AADA00593A30 /* FeatureTogglesSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTogglesSDK.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				8D098DEE2C3D3E3B00D2B70A /* ThreadSafe.swift */,
 				8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */,
 				8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */,
+				8D99191B2C449B1E00A51408 /* AuthenticationChallengeSender.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 				8D098E352C3E59B300D2B70A /* URLRequest.swift in Sources */,
 				8D098E032C3D3E3B00D2B70A /* URLSessionConfiguration.swift in Sources */,
 				8DBF36952C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift in Sources */,
+				8D99191C2C449B1E00A51408 /* AuthenticationChallengeSender.swift in Sources */,
 				8D098DA32C3D3D8100D2B70A /* KeychainSwift.swift in Sources */,
 				8D098E242C3D3E3B00D2B70A /* NetworkInterceptorUrlProtocol.swift in Sources */,
 				8D098E322C3D3E3B00D2B70A /* NetworkRequestInterceptor.swift in Sources */,

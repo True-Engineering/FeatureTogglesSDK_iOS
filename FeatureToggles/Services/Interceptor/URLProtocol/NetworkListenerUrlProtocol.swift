@@ -137,12 +137,8 @@ extension NetworkListenerUrlProtocol: URLSessionDataDelegate {
     func urlSession(_ session: URLSession, 
                     didReceive challenge: URLAuthenticationChallenge,
                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let delegate = FeatureTogglesSDK.urlSessionDelegates.delegates.first else {
-            InterceptorService.shared.checkSessionChallenge(session: session, challenge: challenge, completionHandler: completionHandler)
-            return
-        }
-        
-        delegate.interceptorURLSession(session, didReceive: challenge, completionHandler: completionHandler)
+        let wrappedChallenge = URLAuthenticationChallenge(authenticationChallenge: challenge, sender: AuthenticationChallengeSender(handler: completionHandler))
+        client?.urlProtocol(self, didReceive: wrappedChallenge)
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
