@@ -47,7 +47,7 @@ extension InMemoryStorage: FeatureTogglesStorage {
             
             for index in 0 ..< flagsStorage.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flagsStorage[index].name }) else {
-                    flagsStorage[index].isOverride = true
+                    flagsStorage[index].remoteState = nil
                     continue
                 }
                 flagsStorage[index].description = remoteFlag.description
@@ -105,9 +105,9 @@ extension InMemoryStorage: FeatureTogglesStorage {
         flagsStorage[index].localState = value
     }
     
-    func changeOverrideState(name: String, value: Bool) {
+    func changeUseLocalState(name: String, value: Bool) {
         guard let index = flagsStorage.firstIndex(where: { $0.name == name }) else { return }
-        flagsStorage[index].isOverride = value
+        flagsStorage[index].useLocal = value
     }
     
     func clear() {
@@ -120,7 +120,7 @@ extension InMemoryStorage: FeatureTogglesStorage {
         guard !appFlags.isEmpty else {
             for index in 0 ..< flagsStorage.count {
                 flagsStorage[index].localState = flagsStorage[index].remoteState ?? false
-                flagsStorage[index].isOverride = false
+                flagsStorage[index].useLocal = false
             }
             return
         }
@@ -128,7 +128,7 @@ extension InMemoryStorage: FeatureTogglesStorage {
         for index in 0 ..< flagsStorage.count {
             guard let localFlag = appFlags.first(where: { $0.uid == flagsStorage[index].name }) else { continue }
             flagsStorage[index].localState = localFlag.defaultState
-            flagsStorage[index].isOverride = flagsStorage[index].isLocal
+            flagsStorage[index].useLocal = false
         }
     }
     

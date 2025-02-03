@@ -125,18 +125,18 @@ extension FeatureTogglesSDK {
         repository.loadFeaturesFromRemote()
     }
     
-    // Change local state in storage
+    /// Change local state in storage
     public func changeLocalState(name: String, value: Bool) {
         repository.changeLocalState(name: name, value: value)
     }
     
-    // Change override state in storage. If override state is true then isEnabled will get local state
-    public func changeOverrideState(name: String, value: Bool) {
-        repository.changeOverrideState(name: name, value: value)
+    /// Change `useLocal` state in storage. If `useLocal` state is true then `isEnabled` will get local state
+    public func changeUseLocalState(name: String, value: Bool) {
+        repository.changeUseLocalState(name: name, value: value)
     }
     
     /// Reset local values to default values (your appFlag value or server value).
-    /// Reset isOverride to false for server flags
+    /// Reset `useLocal` to false for server flags
     public func resetToDefaultValues() {
         repository.resetToDefaultValues()
     }

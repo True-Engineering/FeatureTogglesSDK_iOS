@@ -75,7 +75,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
             
             for index in 0 ..< flags.count {
                 guard let remoteFlag = remoteFlags.first(where: { $0.name == flags[index].name }) else {
-                    flags[index].isOverride = true
+                    flags[index].remoteState = nil
                     continue
                 }
                 flags[index].description = remoteFlag.description
@@ -153,9 +153,9 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
         save()
     }
     
-    func changeOverrideState(name: String, value: Bool) {
+    func changeUseLocalState(name: String, value: Bool) {
         guard let index = flags.firstIndex(where: { $0.name == name }) else { return }
-        flags[index].isOverride = value
+        flags[index].useLocal = value
         save()
     }
     
@@ -171,7 +171,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
         guard !appFlags.isEmpty else {
             for index in 0 ..< flags.count {
                 flags[index].localState = flags[index].remoteState ?? false
-                flags[index].isOverride = false
+                flags[index].useLocal = false
             }
             save()
             return
@@ -180,7 +180,7 @@ extension UserDefaultsStorage: FeatureTogglesStorage {
         for index in 0 ..< flags.count {
             guard let localFlag = appFlags.first(where: { $0.uid == flags[index].name }) else { continue }
             flags[index].localState = localFlag.defaultState
-            flags[index].isOverride = flags[index].isLocal
+            flags[index].useLocal = false
         }
         
         save()

@@ -37,7 +37,7 @@ public protocol FeatureTogglesStorage {
     func clear()
     
     func changeLocalState(name: String, value: Bool)
-    func changeOverrideState(name: String, value: Bool)
+    func changeUseLocalState(name: String, value: Bool)
     
     func resetToDefaultValues()
     
