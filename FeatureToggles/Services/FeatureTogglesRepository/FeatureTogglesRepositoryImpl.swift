@@ -58,9 +58,9 @@ extension FeatureTogglesRepositoryImpl {
         }
     }
     
-    func changeOverrideState(name: String, value: Bool) {
+    func changeUseLocalState(name: String, value: Bool) {
         lock.lock()
-        storage.changeOverrideState(name: name, value: value)
+        storage.changeUseLocalState(name: name, value: value)
         lock.unlock()
     }
     

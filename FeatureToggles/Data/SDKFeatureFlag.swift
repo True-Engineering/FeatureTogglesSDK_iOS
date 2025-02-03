@@ -20,13 +20,13 @@ public struct SDKFeatureFlag: Codable, Identifiable {
     
     public var remoteState: Bool?
     public var localState: Bool
-    public var isOverride: Bool
+    public var useLocal: Bool
     
     public var isEnabled: Bool {
-        isOverride ? localState : remoteState ?? localState
+        useLocal ? localState : remoteState ?? localState
     }
     
-    public var isLocal: Bool {
+    public var isLocalFlag: Bool {
         remoteState == nil
     }
     
@@ -41,13 +41,13 @@ public struct SDKFeatureFlag: Codable, Identifiable {
                 group: String? = nil,
                 remoteState: Bool? = nil,
                 localState: Bool,
-                isOverride: Bool = false) {
+                useLocal: Bool = false) {
         self.name = name
         self.description = description
         self.group = group
         self.remoteState = remoteState
         self.localState = localState
-        self.isOverride = isOverride
+        self.useLocal = useLocal
     }
     
     public init(name: String,
@@ -59,7 +59,7 @@ public struct SDKFeatureFlag: Codable, Identifiable {
         self.group = group
         self.remoteState = isEnabled
         self.localState = isEnabled
-        self.isOverride = false
+        self.useLocal = false
     }
     
 }

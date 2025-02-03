@@ -16,7 +16,7 @@ protocol FeatureTogglesRepository {
     func loadFeaturesFromRemote()
     
     func changeLocalState(name: String, value: Bool)
-    func changeOverrideState(name: String, value: Bool)
+    func changeUseLocalState(name: String, value: Bool)
     
     func resetToDefaultValues()
     func clear()
