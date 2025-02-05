@@ -8,7 +8,8 @@ class FeatureTogglesRepositoryImpl: FeatureTogglesRepository {
     private var service: FeatureFlagService
     private var lock = NSLock()
     
-    var didUpdate: (() -> Void)?
+    var didUpdateSuccess: (() -> Void)?
+    var didUpdateFail: (() -> Void)?
     
     // MARK: - Init
     
@@ -47,13 +48,18 @@ extension FeatureTogglesRepositoryImpl {
     
     func loadFeaturesFromRemote() {
         service.loadFeatureToggles { [weak self] featureToggles in
-            guard let self else { return }
+            guard let self, let featureToggles else {
+                DispatchQueue.main.async {
+                    self?.didUpdateFail?()
+                }
+                return
+            }
             self.lock.lock()
             self.storage.save(hash: featureToggles.hash)
             self.storage.save(remoteFlags: featureToggles.flags)
             self.lock.unlock()
             DispatchQueue.main.async {
-                self.didUpdate?()
+                self.didUpdateSuccess?()
             }
         }
     }
@@ -74,7 +80,7 @@ extension FeatureTogglesRepositoryImpl {
         lock.lock()
         storage.resetToDefaultValues()
         lock.unlock()
-        didUpdate?()
+        didUpdateSuccess?()
     }
     
     func clear() {

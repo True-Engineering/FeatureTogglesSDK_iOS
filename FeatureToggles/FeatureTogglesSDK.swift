@@ -2,8 +2,11 @@ import Foundation
 
 public protocol FeatureTogglesSDKDelegate: AnyObject {
     
-    /// Method will call when storage will update
-    func didFeatureTogglesStorageUpdate()
+    /// Method will call when storage will update successfully
+    func didFeatureTogglesStorageUpdateSuccessfully()
+    
+    /// Method will call when storage will update failed
+    func didFeatureTogglesStorageUpdateFailed()
     
 }
 
@@ -79,8 +82,12 @@ public class FeatureTogglesSDK {
         
         let service = FeatureFlagServiceImpl(endpoint: featuresLink, headers: featuresHeaders)
         self.repository = FeatureTogglesRepositoryImpl(storage: storageType.storage, service: service)
-        self.repository.didUpdate = { [weak self] in
-            self?.delegate?.didFeatureTogglesStorageUpdate()
+        self.repository.didUpdateSuccess = { [weak self] in
+            self?.delegate?.didFeatureTogglesStorageUpdateSuccessfully()
+        }
+        
+        self.repository.didUpdateFail = { [weak self] in
+            self?.delegate?.didFeatureTogglesStorageUpdateFailed()
         }
         
         InterceptorService.shared.modifiedList().forEach { _ in
