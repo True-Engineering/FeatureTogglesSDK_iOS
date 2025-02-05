@@ -28,7 +28,7 @@ internal class FeatureFlagServiceImpl: NSObject {
 
 extension FeatureFlagServiceImpl: FeatureFlagService {
     
-    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash) -> Void)) {
+    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
         var request = URLRequest(url: url)
         
@@ -40,12 +40,14 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             guard let data else {
                 if let error {
                     FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
+                    completion(nil)
                 }
                 return
             }
             
             guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
                 FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result.")
+                completion(nil)
                 return
             }
             

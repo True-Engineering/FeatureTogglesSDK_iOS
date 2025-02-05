@@ -4,7 +4,8 @@ protocol FeatureTogglesRepository {
     
     // MARK: - Properties
     
-    var didUpdate: (() -> Void)? { get set }
+    var didUpdateSuccess: (() -> Void)? { get set }
+    var didUpdateFail: (() -> Void)? { get set }
     
     // MARK: - Methods
     
