@@ -28,7 +28,7 @@ internal class FeatureFlagServiceImpl: NSObject {
 
 extension FeatureFlagServiceImpl: FeatureFlagService {
     
-    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?) -> Void)) {
+    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?, Int?) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
         var request = URLRequest(url: url)
         
@@ -36,18 +36,22 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             request.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        let task = session?.dataTask(with: request) { data, response, error  in
+        let task = session?.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                fatalError()
+            }
+            
             guard let data else {
                 if let error {
                     FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
-                    completion(nil)
+                    completion(nil, httpResponse.statusCode)
                 }
                 return
             }
             
             guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
                 FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result.")
-                completion(nil)
+                completion(nil, httpResponse.statusCode)
                 return
             }
             
@@ -57,7 +61,7 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
                                                                                       isEnabled: $0.value.enable) }
             let hash = featureFlagsWithHash.featureFlagsHash
             
-            completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash))
+            completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash), nil)
         }
         
         task?.resume()
