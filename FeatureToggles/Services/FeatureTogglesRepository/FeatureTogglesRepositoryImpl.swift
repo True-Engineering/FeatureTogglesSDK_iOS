@@ -9,7 +9,7 @@ class FeatureTogglesRepositoryImpl: FeatureTogglesRepository {
     private var lock = NSLock()
     
     var didUpdateSuccess: (() -> Void)?
-    var didUpdateFail: (() -> Void)?
+    var didUpdateFail: ((Int?) -> Void)?
     
     // MARK: - Init
     
@@ -47,10 +47,10 @@ extension FeatureTogglesRepositoryImpl {
     }
     
     func loadFeaturesFromRemote() {
-        service.loadFeatureToggles { [weak self] featureToggles in
+        service.loadFeatureToggles { [weak self] featureToggles, httpErrorCode in
             guard let self, let featureToggles else {
                 DispatchQueue.main.async {
-                    self?.didUpdateFail?()
+                    self?.didUpdateFail?(httpErrorCode)
                 }
                 return
             }
