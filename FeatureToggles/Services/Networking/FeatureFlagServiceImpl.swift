@@ -37,21 +37,23 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
         }
         
         let task = session?.dataTask(with: request) { data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse else {
-                fatalError()
-            }
-            
-            guard let data else {
+            guard let data, let httpResponse = response as? HTTPURLResponse, error == nil else {
                 if let error {
                     FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
-                    completion(nil, httpResponse.statusCode)
+                    completion(nil, nil)
                 }
                 return
             }
             
-            guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
-                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result.")
+            guard 200 ..< 300 ~= httpResponse.statusCode else {
+                FeatureTogglesLoggingService.shared.log(message: "[Error] Status code was \(httpResponse.statusCode), but expected 2xx")
                 completion(nil, httpResponse.statusCode)
+                return
+            }
+            
+            guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
+                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result")
+                completion(nil, nil)
                 return
             }
             
