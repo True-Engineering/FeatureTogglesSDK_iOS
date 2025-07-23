@@ -59,13 +59,16 @@ public class FeatureTogglesSDK {
     ///                   Default value is `nil`
     ///   - publicKeyHash: Public key hash for ssl-pinning.
     ///                    Default value is `nil`
+    ///   - mockFilePath: Path to the mock file. If the parameter is specified, then instead of requesting flags from the server, the library will return a list of flags from the mock file.
+    ///                   Default value is `nil`
     public init(storageType: FeatureTogglesStorageType = .userDefaults(appFlags: []),
                 headerKey: String = Constants.defaultHeaderKey,
                 baseUrl: String,
                 apiFeaturesPath: String = Constants.defaultAPIFeaturesPath,
                 featuresHeaders: [String: String] = [:],
                 certificates: [Data]? = nil,
-                publicKeyHash: String? = nil) {
+                publicKeyHash: String? = nil,
+                mockFilePath: Data? = nil) {
         if headerKey.isEmpty {
             print("FF header key have to be not empty!")
         }
@@ -80,7 +83,7 @@ public class FeatureTogglesSDK {
         InterceptorService.shared.publicKeyHash = publicKeyHash
         InterceptorService.shared.host = URL(string: baseUrl)?.host ?? ""
         
-        let service = FeatureFlagServiceImpl(endpoint: featuresLink, headers: featuresHeaders)
+        let service = FeatureFlagServiceImpl(endpoint: featuresLink, headers: featuresHeaders, mockFilePath: mockFilePath)
         self.repository = FeatureTogglesRepositoryImpl(storage: storageType.storage, service: service)
         self.repository.didUpdateSuccess = { [weak self] in
             self?.delegate?.didFeatureTogglesStorageUpdateSuccessfully()

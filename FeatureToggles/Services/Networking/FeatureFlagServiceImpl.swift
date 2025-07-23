@@ -6,16 +6,19 @@ internal class FeatureFlagServiceImpl: NSObject {
     // MARK: - Properties
     
     private var endpoint: String
-    private var headers: [String: String] = [:]
+    private var headers: [String: String]
+    private var mockFilePath: Data?
     private var session: URLSession?
     private var interceptorService = InterceptorService.shared
     
     // MARK: - Init
     
     init(endpoint: String,
-         headers: [String: String]) {
+         headers: [String: String],
+         mockFilePath: Data? = nil) {
         self.endpoint = endpoint
         self.headers = headers
+        self.mockFilePath = mockFilePath
         
         super.init()
         
@@ -30,29 +33,18 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
     
     func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?, Int?) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
-        var request = URLRequest(url: url)
         
-        headers.forEach {
-            request.setValue($0.value, forHTTPHeaderField: $0.key)
-        }
-        
-        let task = session?.dataTask(with: request) { data, response, error in
-            guard let data, let httpResponse = response as? HTTPURLResponse, error == nil else {
-                if let error {
-                    FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
-                    completion(nil, nil)
-                }
-                return
-            }
+        if let mockFilePath {
+            //            guard let data else {
+            //                FeatureTogglesLoggingService.shared.log(message: "[Error] Mock file not found")
+            //                completion(nil, nil)
+            //                return
+            //            }
             
-            guard 200 ..< 300 ~= httpResponse.statusCode else {
-                FeatureTogglesLoggingService.shared.log(message: "[Error] Status code was \(httpResponse.statusCode), but expected 2xx")
-                completion(nil, httpResponse.statusCode)
-                return
-            }
+            let decoder = JSONDecoder()
             
-            guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
-                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result")
+            guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: mockFilePath) else {
+                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse mock data to expected result")
                 completion(nil, nil)
                 return
             }
@@ -64,11 +56,46 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             let hash = featureFlagsWithHash.featureFlagsHash
             
             completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash), nil)
+        } else {
+            var request = URLRequest(url: url)
+            
+            headers.forEach {
+                request.setValue($0.value, forHTTPHeaderField: $0.key)
+            }
+            
+            let task = session?.dataTask(with: request) { data, response, error in
+                guard let data, let httpResponse = response as? HTTPURLResponse, error == nil else {
+                    if let error {
+                        FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
+                        completion(nil, nil)
+                    }
+                    return
+                }
+                
+                guard 200 ..< 300 ~= httpResponse.statusCode else {
+                    FeatureTogglesLoggingService.shared.log(message: "[Error] Status code was \(httpResponse.statusCode), but expected 2xx")
+                    completion(nil, httpResponse.statusCode)
+                    return
+                }
+                
+                guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
+                    FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result")
+                    completion(nil, nil)
+                    return
+                }
+                
+                let featureFlags = featureFlagsWithHash.featureFlags.map { SDKFeatureFlag(name: $0.key,
+                                                                                          description: $0.value.description,
+                                                                                          group: $0.value.group,
+                                                                                          isEnabled: $0.value.enable) }
+                let hash = featureFlagsWithHash.featureFlagsHash
+                
+                completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash), nil)
+            }
+            
+            task?.resume()
         }
-        
-        task?.resume()
     }
-    
 }
 
 // MARK: - URLSessionDelegate
