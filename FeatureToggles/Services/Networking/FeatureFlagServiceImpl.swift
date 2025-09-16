@@ -1,14 +1,14 @@
 import Foundation
 import CommonCrypto
 
-internal class FeatureFlagServiceImpl: NSObject {
+internal class FeatureFlagServiceImpl {
     
     // MARK: - Properties
     
     private var endpoint: String
     private var headers: [String: String] = [:]
-    private var session: URLSession?
-    private var interceptorService = InterceptorService.shared
+    private var session: URLSession
+    private let delegateHandler: URLSessionDelegateHandler
     
     // MARK: - Init
     
@@ -16,10 +16,15 @@ internal class FeatureFlagServiceImpl: NSObject {
          headers: [String: String]) {
         self.endpoint = endpoint
         self.headers = headers
+        self.delegateHandler = URLSessionDelegateHandler()
         
-        super.init()
-        
-        session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        session = URLSession(configuration: .default, delegate: delegateHandler, delegateQueue: nil)
+    }
+    
+    // MARK: - Deinit
+    
+    deinit {
+        session.invalidateAndCancel()
     }
     
 }
@@ -36,7 +41,7 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             request.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        let task = session?.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, error in
             guard let data, let httpResponse = response as? HTTPURLResponse, error == nil else {
                 if let error {
                     FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
@@ -66,14 +71,20 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
             completion(SDKFeatureFlagsWithHash(flags: featureFlags, hash: hash), nil)
         }
         
-        task?.resume()
+        task.resume()
     }
     
 }
 
-// MARK: - URLSessionDelegate
+// MARK: - URLSessionDelegateHandler
 
-extension FeatureFlagServiceImpl: URLSessionDelegate {
+final private class URLSessionDelegateHandler: NSObject, URLSessionDelegate {
+    
+    private let interceptorService: InterceptorService
+    
+    init(interceptorService: InterceptorService = .shared) {
+        self.interceptorService = interceptorService
+    }
     
     private var rsa2048Asn1Header: [UInt8] {
         return [
