@@ -33,7 +33,7 @@ internal class FeatureFlagServiceImpl {
 
 extension FeatureFlagServiceImpl: FeatureFlagService {
     
-    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?, Int?) -> Void)) {
+    func loadFeatureToggles(completion: @escaping ((SDKFeatureFlagsWithHash?, LoadingErrorInfo?) -> Void)) {
         guard let url = URL(string: endpoint) else { return }
         var request = URLRequest(url: url)
         
@@ -44,21 +44,33 @@ extension FeatureFlagServiceImpl: FeatureFlagService {
         let task = session.dataTask(with: request) { data, response, error in
             guard let data, let httpResponse = response as? HTTPURLResponse, error == nil else {
                 if let error {
-                    FeatureTogglesLoggingService.shared.log(message: "[Error] \(error.localizedDescription)")
-                    completion(nil, nil)
+                    let errorMessage = "[Error] \(error.localizedDescription)"
+                    
+                    FeatureTogglesLoggingService.shared.log(message: errorMessage)
+                    
+                    let errorInfo = LoadingErrorInfo(statusCode: nil, errorDescription: errorMessage)
+                    completion(nil, errorInfo)
                 }
                 return
             }
             
             guard 200 ..< 300 ~= httpResponse.statusCode else {
-                FeatureTogglesLoggingService.shared.log(message: "[Error] Status code was \(httpResponse.statusCode), but expected 2xx")
-                completion(nil, httpResponse.statusCode)
+                let errorMessage = "[Error] Status code was \(httpResponse.statusCode), but expected 2xx"
+                
+                FeatureTogglesLoggingService.shared.log(message: errorMessage)
+                
+                let errorInfo = LoadingErrorInfo(statusCode: httpResponse.statusCode, errorDescription: errorMessage)
+                completion(nil, errorInfo)
                 return
             }
             
             guard let featureFlagsWithHash = try? JSONDecoder().decode(FeatureFlagsWithHash.self, from: data) else {
-                FeatureTogglesLoggingService.shared.log(message: "[Error] Can't parse response to expected result")
-                completion(nil, nil)
+                let errorMessage = "[Error] Can't parse response to expected result"
+                
+                FeatureTogglesLoggingService.shared.log(message: errorMessage)
+                
+                let errorInfo = LoadingErrorInfo(statusCode: httpResponse.statusCode, errorDescription: errorMessage)
+                completion(nil, errorInfo)
                 return
             }
             

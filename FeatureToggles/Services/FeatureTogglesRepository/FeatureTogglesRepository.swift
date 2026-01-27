@@ -5,7 +5,7 @@ protocol FeatureTogglesRepository {
     // MARK: - Properties
     
     var didUpdateSuccess: (() -> Void)? { get set }
-    var didUpdateFail: ((Int?) -> Void)? { get set }
+    var didUpdateFail: ((LoadingErrorInfo?) -> Void)? { get set }
     
     // MARK: - Methods
     
