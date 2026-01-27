@@ -51,6 +51,7 @@
 		8DBF36952C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */; };
 		8DBF36A62C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */; };
 		8DBF36AA2C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */; };
+		F78FBEE12F28992100BDA65C /* LoadingErrorInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78FBEE02F28992100BDA65C /* LoadingErrorInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		8DBF36942C3FEBA6002928FC /* InterceptorURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorURLSessionDelegate.swift; sourceTree = "<group>"; };
 		8DBF36A52C4000FE002928FC /* WeakInterceptorURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakInterceptorURLSessionDelegate.swift; sourceTree = "<group>"; };
 		8DBF36A92C40269B002928FC /* InterceptorURLSessionDelegatesArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorURLSessionDelegatesArray.swift; sourceTree = "<group>"; };
+		F78FBEE02F28992100BDA65C /* LoadingErrorInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingErrorInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			children = (
 				8D098D972C3D3D8100D2B70A /* FeatureFlagService.swift */,
 				8D098D982C3D3D8100D2B70A /* FeatureFlagServiceImpl.swift */,
+				F78FBEE02F28992100BDA65C /* LoadingErrorInfo.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				8D098E092C3D3E3B00D2B70A /* RequestObservable.swift in Sources */,
 				8D098E232C3D3E3B00D2B70A /* NetworkIgnore.swift in Sources */,
 				8D098E0F2C3D3E3B00D2B70A /* RequestEvaluatorModifierEndpoint.swift in Sources */,
+				F78FBEE12F28992100BDA65C /* LoadingErrorInfo.swift in Sources */,
 				8D098DA22C3D3D8100D2B70A /* FeatureTogglesRepositoryImpl.swift in Sources */,
 				8D098E102C3D3E3B00D2B70A /* RequestEvaluatorModifierHeader.swift in Sources */,
 				8D3E0A1B2A80F05A00715496 /* String.swift in Sources */,

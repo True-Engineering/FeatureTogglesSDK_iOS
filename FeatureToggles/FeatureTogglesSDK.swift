@@ -6,7 +6,7 @@ public protocol FeatureTogglesSDKDelegate: AnyObject {
     func didFeatureTogglesStorageUpdateSuccessfully()
     
     /// Method will call when storage will update failed
-    func didFeatureTogglesStorageUpdateFailed(httpErrorCode: Int?)
+    func didFeatureTogglesStorageUpdateFailed(loadingErrorInfo: LoadingErrorInfo?)
     
 }
 
@@ -86,8 +86,8 @@ public class FeatureTogglesSDK {
             self?.delegate?.didFeatureTogglesStorageUpdateSuccessfully()
         }
         
-        self.repository.didUpdateFail = { [weak self] httpErrorCode in
-            self?.delegate?.didFeatureTogglesStorageUpdateFailed(httpErrorCode: httpErrorCode)
+        self.repository.didUpdateFail = { [weak self] loadingErrorInfo in
+            self?.delegate?.didFeatureTogglesStorageUpdateFailed(loadingErrorInfo: loadingErrorInfo)
         }
         
         InterceptorService.shared.modifiedList().forEach { _ in
